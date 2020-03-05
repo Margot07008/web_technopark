@@ -1,0 +1,70 @@
+
+
+
+div.select_questions {
+    display: flex;
+    text-align: center;
+}
+
+.tape{
+    margin-top: 10px;
+}
+
+.one_question{
+    display: inline-flex;
+    width: 100%;
+}
+
+.header_question{
+    width: 100%;
+}
+
+.body_question{
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+.ava_question{
+    width : 110px;
+    height : 110px;
+    padding-top: 8px;
+
+}
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #5A4181;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: white;
+    background-color: #4f4f4f;
+    border-color: white;
+}
+
+.ask_me{
+    display: flex;
+    justify-content: center;
+}
+
+.ava_navbar{
+    position: relative;
+    width : 80px;
+    height : 80px;
+    margin-right: 8px;
+}
+
+.log_user{
+    display: inherit;
+}
+
+.user_name_navbar{
+    display: flex;
+    justify-content: center;
+}

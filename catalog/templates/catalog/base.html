@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block page_name %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% block page_style %}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand ml-3 " href="#">Ask_margot</a>
+    <div class="my_bar collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="col ">
+            <form>
+                <input class="form-control mr-0" type="search" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+        {% block header %}
+        {% endblock %}
+        {% if request.user.is_anonymous %}
+            <div>
+                <button type="button" class="btn btn-link">log in</button>
+                <button type="button" class="btn btn-link">Register</button>
+            </div>
+        {% else %}
+            <div class="log_user">
+                <div class="avatar"
+                     style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
+                             background-size: contain"></div>
+
+                {#                </div>#}
+                {#                <img class="ava_navbar" src="{% static 'images/2.jpg' %}"  alt="ooops">#}
+                {#                <div >#}
+
+                <a href="#" class="navbar-brand ml-0 mr-0 pt-0 user_name_navbar">User name</a>
+                <div>
+                    <button type="button" class="btn btn-link">settings</button>
+                    <button type="button" class="btn btn-link">log out</button>
+                </div>
+            </div>
+            </div>
+        {% endif %}
+
+    </div>
+</nav>
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 blog-main mt-2">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <aside class="col-md-4 blog-sidebar">
+            <div class="right_table">
+                <div class="popular_tags">
+                    <div>
+                        <h3 class="font-italic">Popular tags</h3>
+                    </div>
+                    <div class="tags">
+                        {% for t in tags %}
+                            <button type="button" class="btn btn-outline-info tag">{{ t.tag_name }}</button>
+                        {% endfor %}
+                        <button type="button" class="btn btn-outline-info">{asd</button>
+                        <button type="button" class="btn btn-outline-info">asdasdasdasdasd</button>
+                        <button type="button" class="btn btn-outline-info">{as</button>
+                        <button type="button" class="btn btn-outline-info">zxczxcqweqwe</button>
+                        <button type="button" class="btn btn-outline-info">ass</button>
+
+                    </div>
+
+
+                </div>
+                <div class="best_members">
+                    <div class="p-3">
+                        <h4 class="font-italic">Best members</h4>
+                        <ol class="list-unstyled">
+                            {% for u in users %}
+                                <li><a href="#">{{ u.nickname }}</a></li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+</body>
+</html>

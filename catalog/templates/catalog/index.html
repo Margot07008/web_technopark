@@ -1,0 +1,67 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block page_name %}
+    ask_margot
+{% endblock %}
+
+{% block page_style %}
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block header %}
+    <div class="col ask_me">
+        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light " type="submit">ASK ME</button>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="select_questions row collapse-toggle">
+        <button class="col btn btn-lg btn-dark btn-primary rounded-0">New questions</button>
+        <button class="col btn btn-lg btn-dark btn-primary rounded-0">Best questions</button>
+    </div>
+    <div class="tape">
+        {% for q in questions %}
+            <ul class="list-group">
+                <li class="list-group-item text-left mb-2">
+                    <div class="one_question">
+                        <div>
+                            <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
+                            <div>{{ q.author }}</div>
+                            <div>{{ q.create_date }}</div>
+                        </div>
+                        <div class="header_question">
+                            <button class="btn btn-lg btn-block btn-default rounded-0">{{ q.header }}</button>
+                            <div class="body_question">{{ q.body_quest }}</div>
+                        </div>
+
+                    </div>
+
+
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center ">
+            <li class="page-item ">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+

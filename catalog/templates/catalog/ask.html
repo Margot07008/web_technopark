@@ -1,0 +1,33 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block page_name %}
+    ask_margot
+{% endblock %}
+
+{% block page_style %}
+    <link rel="stylesheet" href="{% static 'css/ask.css' %}">
+{% endblock %}
+
+{% block header %}
+    <div class="col ask_me">
+        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" type="submit">ASK ME</button>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="new_questoin">
+        <div>
+            <h3>New question</h3>
+        </div>
+        <form>
+            <div class="form-group row mb-2">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
+                <div class="col-sm-8">
+                    <input type="email" class="form-control form-control-lg" id="colFormLabelLg" placeholder="col-form-label-lg">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
