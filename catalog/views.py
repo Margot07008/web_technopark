@@ -24,3 +24,7 @@ def ask_margot_ask(request):
     question = Question.objects.all()
     user = UserProfile.objects.all()
     return render(request, 'catalog/ask.html', {'tags': tag, 'questions': question, 'users': user})
+
+# def add_new_question(request):
+#     if request.method =="POST":
+#

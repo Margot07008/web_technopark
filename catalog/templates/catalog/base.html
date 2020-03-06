@@ -13,26 +13,26 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg  navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand ml-3 " href="#">Ask_margot</a>
+    <a class="navbar-brand ml-3 " href="../">Ask_margot</a>
     <div class="my_bar collapse navbar-collapse" id="navbarSupportedContent">
         <div class="col ">
             <form>
                 <input class="form-control mr-0" type="search" placeholder="Search" aria-label="Search">
             </form>
         </div>
-        {% block header %}
-        {% endblock %}
         {% if request.user.is_anonymous %}
             <div>
                 <button type="button" class="btn btn-link">log in</button>
                 <button type="button" class="btn btn-link">Register</button>
             </div>
         {% else %}
+            {% block header %}
+            {% endblock %}
             <div class="log_user">
                 <div class="avatar"
                      style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
                              background-size: contain"></div>
-                <a href="#" class="navbar-brand ml-0 mr-0 pt-0 user_name_navbar">{{ request.user }}</a>
+                <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar">{{ request.user }}</a>
                 <div>
                     <button type="button" class="btn btn-link">settings</button>
                     <button type="button" class="btn btn-link">log out</button>

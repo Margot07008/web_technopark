@@ -45,3 +45,16 @@
     justify-content: center;
     display: flex;
 }
+
+
+.user_name_navbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 12px;
+
+}
+
+.log_user{
+    display: inherit;
+}

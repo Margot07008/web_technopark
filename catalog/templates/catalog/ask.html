@@ -9,26 +9,21 @@
     <link rel="stylesheet" href="{% static 'css/ask.css' %}">
 {% endblock %}
 
-{% block header %}
-    <div class="col ask_me">
-        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" type="submit">ASK ME</button>
-    </div>
 
-{% endblock %}
 
 {% block content %}
     <div class="new_questoin">
         <div class="new_questoin_lable">
             <h3>New question</h3>
         </div>
-        <form>
+        <form method="POST" action="">
             <div class="form-group row mb-2 ">
                 <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control form-control-lg" id="colFormLabelLg" placeholder="">
                 </div>
             </div>
-        </form>
+
 
             <div class="form-group row mb-2">
                 <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Text</label>
@@ -37,7 +32,7 @@
                 </div>
             </div>
 
-    <form>
+
             <div class="form-group row mb-2">
                 <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Tags</label>
                 <div class="col-sm-10">
@@ -46,7 +41,7 @@
             </div>
         </form>
     <div class="col ask_me_btn">
-        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" type="submit">ASK ME</button>
+        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="add_ask_me" type="submit">ASK ME</button>
     </div>
     </div>
 

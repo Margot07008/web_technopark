@@ -11,6 +11,7 @@ import datetime
 # Create your models here.
 class UserProfile(models.Model):
 
+
     id = models.AutoField(primary_key=True)
     email = models.EmailField()
     nickname = models.CharField(max_length = 25, unique=True)

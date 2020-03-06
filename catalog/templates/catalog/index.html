@@ -9,14 +9,11 @@
 
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
-
 {% block header %}
     <div class="col ask_me">
-        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light " type="submit">ASK ME</button>
+        <a href="ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
     </div>
 {% endblock %}
-
-
 {% block content %}
     <div class="select_questions row collapse-toggle">
         <button class="col btn btn-lg btn-dark btn-primary rounded-0">New questions</button>

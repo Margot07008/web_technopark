@@ -60,11 +60,4 @@ div.select_questions {
     margin-right: 8px;
 }
 
-.log_user{
-    display: inherit;
-}
 
-.user_name_navbar{
-    display: flex;
-    justify-content: center;
-}
