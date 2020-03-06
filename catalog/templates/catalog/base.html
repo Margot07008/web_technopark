@@ -32,12 +32,7 @@
                 <div class="avatar"
                      style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
                              background-size: contain"></div>
-
-                {#                </div>#}
-                {#                <img class="ava_navbar" src="{% static 'images/2.jpg' %}"  alt="ooops">#}
-                {#                <div >#}
-
-                <a href="#" class="navbar-brand ml-0 mr-0 pt-0 user_name_navbar">User name</a>
+                <a href="#" class="navbar-brand ml-0 mr-0 pt-0 user_name_navbar">{{ request.user }}</a>
                 <div>
                     <button type="button" class="btn btn-link">settings</button>
                     <button type="button" class="btn btn-link">log out</button>
@@ -55,7 +50,7 @@
 
             {% endblock %}
         </div>
-        <aside class="col-md-4 blog-sidebar">
+        <aside class="col-md-4 blog-sidebar slide_bar">
             <div class="right_table">
                 <div class="popular_tags">
                     <div>
@@ -63,13 +58,13 @@
                     </div>
                     <div class="tags">
                         {% for t in tags %}
-                            <button type="button" class="btn btn-outline-info tag">{{ t.tag_name }}</button>
+                            <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag">{{ t.tag_name }}</button>
                         {% endfor %}
-                        <button type="button" class="btn btn-outline-info">{asd</button>
-                        <button type="button" class="btn btn-outline-info">asdasdasdasdasd</button>
-                        <button type="button" class="btn btn-outline-info">{as</button>
-                        <button type="button" class="btn btn-outline-info">zxczxcqweqwe</button>
-                        <button type="button" class="btn btn-outline-info">ass</button>
+                        <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light ">{asd</button>
+                        <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light ">asdasdasdasdasd</button>
+                        <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light ">{as</button>
+                        <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light ">zxczxcqweqwe</button>
+                        <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light ">ass</button>
 
                     </div>
 
@@ -77,7 +72,8 @@
                 </div>
                 <div class="best_members">
                     <div class="p-3">
-                        <h4 class="font-italic">Best members</h4>
+                    <div class="best_members_topic">
+                        <h4 class="font-italic">Best members</h4></div>
                         <ol class="list-unstyled">
                             {% for u in users %}
                                 <li><a href="#">{{ u.nickname }}</a></li>

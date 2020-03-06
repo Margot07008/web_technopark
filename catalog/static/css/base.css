@@ -1,6 +1,7 @@
 .right_table {
     width: 100%;
-    background-color: #4f4f4f;
+    background-color: #343a40;
+
 }
 
 .right_table h3 {
@@ -17,7 +18,6 @@
 }
 
 .popular_tags h3{
-
     margin-top: 8px;
     color: white;
 }
@@ -34,4 +34,14 @@
 
 .avatar {
     width: 100px;
+}
+
+.slide_bar{
+    position: fixed !important;
+    right: 0;
+}
+
+.best_members_topic{
+    justify-content: center;
+    display: flex;
 }

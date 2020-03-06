@@ -21,4 +21,6 @@ def ask_margot_not_log(request):
 
 def ask_margot_ask(request):
     tag = Tag.objects.all()
-    return render(request, 'catalog/ask.html', {'tags': tag})
+    question = Question.objects.all()
+    user = UserProfile.objects.all()
+    return render(request, 'catalog/ask.html', {'tags': tag, 'questions': question, 'users': user})
