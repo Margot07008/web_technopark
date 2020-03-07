@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://use.fontawesome.com/71bed39430.js"></script>
     {% block page_style %}
     {% endblock %}
 </head>
@@ -20,14 +21,15 @@
                 <input class="form-control mr-0" type="search" placeholder="Search" aria-label="Search">
             </form>
         </div>
+        {% block header %}
+
+            {% endblock %}
         {% if request.user.is_anonymous %}
             <div>
                 <button type="button" class="btn btn-link">log in</button>
                 <button type="button" class="btn btn-link">Register</button>
             </div>
         {% else %}
-            {% block header %}
-            {% endblock %}
             <div class="log_user">
                 <div class="avatar"
                      style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
@@ -87,3 +89,4 @@
 </div>
 </body>
 </html>
+

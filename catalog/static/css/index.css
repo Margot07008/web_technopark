@@ -22,6 +22,8 @@ div.select_questions {
 .body_question{
     margin-left: 20px;
     margin-right: 20px;
+        overflow: auto;
+    max-height: 150px;
 
 }
 
@@ -60,4 +62,35 @@ div.select_questions {
     margin-right: 8px;
 }
 
+/*.color_question{*/
+/*    background-color: #343a40;*/
+/*    color: white;*/
+/*    padding-right: 5px;*/
+/*    padding-left: 5px;*/
+/*}*/
 
+button.like{
+	width: 30px;
+	height: 30px;
+	margin: 0 auto;
+	line-heigth: 50px;
+	border-radius: 50%;
+	color: rgba(0,150,136 ,1);
+	background-color:rgba(38,166,154 ,0.3);
+	border-color: rgba(0,150,136 ,1);
+	border-width: 1px;
+	font-size: 15px;
+}
+
+button.dislike{
+	width: 30px;
+	height: 30px;
+	margin: 0 auto;
+	line-heigth: 50px;
+	border-radius: 50%;
+	color: rgba(255,82,82 ,1);
+	background-color: rgba(255,138,128 ,0.3);
+	border-color: rgba(255,82,82 ,1);
+	border-width: 1px;
+	font-size: 15px;
+}

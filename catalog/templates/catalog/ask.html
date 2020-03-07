@@ -2,47 +2,54 @@
 {% load static %}
 
 {% block page_name %}
-    ask_margot
+    ask_margot_ask
 {% endblock %}
 
 {% block page_style %}
     <link rel="stylesheet" href="{% static 'css/ask.css' %}">
 {% endblock %}
 
-
+{% block header %}
+    {% if request.user.is_anonymous  %}
+        <div class="col ask_me">
+            <a href="register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% else %}
+        <div class="col ask_me">
+            <a href=""><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="new_questoin">
         <div class="new_questoin_lable">
             <h3>New question</h3>
         </div>
-        <form method="POST" action="">
+        <form method="POST" action="../../views.py">
+            {%  csrf_token%}
             <div class="form-group row mb-2 ">
-                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
+                <label for="../../views.py" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-lg" id="colFormLabelLg" placeholder="">
+                    <input type="text" class="form-control form-control-lg" id="../../views.py" placeholder="" name="title">
                 </div>
             </div>
-
-
             <div class="form-group row mb-2">
-                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Text</label>
+                <label for="../../views.py" class="col-sm-2 col-form-label col-form-label-lg">Text</label>
                 <div class="col-lg-10">
-                    <textarea name="comment" rows="10" style="resize: none; width: 100%">  </textarea>
+                    <textarea rows="10" style="resize: none; width: 100%" name="text" id="../../views.py">  </textarea>
                 </div>
             </div>
-
-
             <div class="form-group row mb-2">
-                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Tags</label>
+                <label for="../../views.py" class="col-sm-2 col-form-label col-form-label-lg">Tags</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-lg" id="colFormLabelLg1" placeholder="">
+                    <input name="tags" type="text" class="form-control form-control-lg" id="../../views.py" placeholder="">
                 </div>
             </div>
-        </form>
-    <div class="col ask_me_btn">
+            <div class="col ask_me_btn">
         <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="add_ask_me" type="submit">ASK ME</button>
     </div>
+        </form>
     </div>
 
 {% endblock %}

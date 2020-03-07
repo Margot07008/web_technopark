@@ -10,9 +10,15 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock %}
 {% block header %}
-    <div class="col ask_me">
-        <a href="ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
-    </div>
+    {% if request.user.is_anonymous  %}
+        <div class="col ask_me">
+            <a href="register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% else %}
+        <div class="col ask_me">
+            <a href="ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="select_questions row collapse-toggle">
@@ -24,19 +30,37 @@
             <ul class="list-group">
                 <li class="list-group-item text-left mb-2">
                     <div class="one_question">
-                        <div>
+                        <div class="color_question">
                             <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
                             <div>{{ q.author }}</div>
                             <div>{{ q.create_date }}</div>
+                            <div>{{ q.rating }}
+                                <button class="like">
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                </button>
+                                <button class="dislike">
+                                    <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                                </button>
+                            </div>
                         </div>
+
                         <div class="header_question">
-                            <button class="btn btn-lg btn-block btn-default rounded-0">{{ q.header }}</button>
+                            <form action="question" method="get">
+                            <button  type="submit" name="question_page" value="{{ q.id }}" class="btn btn-lg btn-block btn-default rounded-0" >{{ q.header }}</button>
+                                </form>
                             <div class="body_question">{{ q.body_quest }}</div>
+                        </div>
+                        <div class="color_question">
+                            {% for t in tags %}
+                                {#                                {% if t in q.tag %}#}
+                                <div><a href="#">  {{ t }}</a></div>
+                                {#                                {% endif %}#}
+                            {% endfor %}
+
                         </div>
 
                     </div>
-
-
+                <div class="best_members_topic"><a href="#" >answers</a></div>
                 </li>
             </ul>
         {% endfor %}

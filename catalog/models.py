@@ -37,12 +37,13 @@ class Tag(models.Model):
 
 class Question(models.Model):
 
+    id = models.AutoField(primary_key=True)
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     header = models.TextField()
     body_quest = models.TextField()
     create_date = models.DateTimeField(default=timezone.now(), blank=True, null=True)
     tag = models.ManyToManyField(Tag)
-    rating = models.FloatField(null=True)
+    rating = models.FloatField(default=0 ,null=True)
 
     def publish(self):
         self.create_date = timezone.now()
@@ -55,12 +56,11 @@ class Question(models.Model):
 class Answer(models.Model):
 
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    question = models.OneToOneField(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body_answer = models.TextField()
-    create_date = models.DateTimeField(blank=True, null=True)
-    rating = models.FloatField()
-    tag = models.ManyToManyField(Tag)
-    flag = models.BooleanField()
+    create_date = models.DateTimeField(default=timezone.now(), blank=True, null=True)
+    rating = models.FloatField(default=0 ,null=True)
+    flag = models.BooleanField(blank=True, default=False)
 
     def publish(self):
         self.create_date = timezone.now()

@@ -5,3 +5,4 @@ from .models import UserProfile, Answer, Tag, Question
 admin.site.register(Tag)
 admin.site.register(Question)
 admin.site.register(UserProfile)
+admin.site.register(Answer)
