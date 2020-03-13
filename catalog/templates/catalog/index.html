@@ -12,11 +12,11 @@
 {% block header %}
     {% if request.user.is_anonymous  %}
         <div class="col ask_me">
-            <a href="register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href="/registration/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% else %}
         <div class="col ask_me">
-            <a href="ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href="/ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% endif %}
 {% endblock %}
@@ -45,22 +45,20 @@
                         </div>
 
                         <div class="header_question">
-                            <form action="question" method="get">
-                            <button  type="submit" name="question_page" value="{{ q.id }}" class="btn btn-lg btn-block btn-default rounded-0" >{{ q.header }}</button>
-                                </form>
+                            <div class="header_question_text"><H4>{{ q.header }}</H4></div>
                             <div class="body_question">{{ q.body_quest }}</div>
                         </div>
                         <div class="color_question">
-                            {% for t in tags %}
+                            {% for tag in q.tag.all %}
                                 {#                                {% if t in q.tag %}#}
-                                <div><a href="#">  {{ t }}</a></div>
+                                <div><a href="#">  {{ tag }}</a></div>
                                 {#                                {% endif %}#}
                             {% endfor %}
 
                         </div>
 
                     </div>
-                <div class="best_members_topic"><a href="#" >answers</a></div>
+                <div class="best_members_topic"><a  href="/question/{{ q.id }}" >answers</a></div>
                 </li>
             </ul>
         {% endfor %}

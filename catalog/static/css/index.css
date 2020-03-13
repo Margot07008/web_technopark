@@ -94,3 +94,7 @@ button.dislike{
 	border-width: 1px;
 	font-size: 15px;
 }
+
+.header_question_text{
+    text-align: center;
+}

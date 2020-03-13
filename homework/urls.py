@@ -21,7 +21,6 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('catalog.urls')),
-    path('ask/', include('catalog.urls'))
 ]
 
 # Use include() to add paths from the catalog application

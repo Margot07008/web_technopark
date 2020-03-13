@@ -22,12 +22,11 @@
             </form>
         </div>
         {% block header %}
-
             {% endblock %}
         {% if request.user.is_anonymous %}
             <div>
-                <button type="button" class="btn btn-link">log in</button>
-                <button type="button" class="btn btn-link">Register</button>
+                <a href="/login/"><button type="button" class="btn btn-link">log in</button></a>
+                <a href="/registration/"><button type="button" class="btn btn-link">Register</button></a>
             </div>
         {% else %}
             <div class="log_user">
@@ -36,8 +35,8 @@
                              background-size: contain"></div>
                 <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar">{{ request.user }}</a>
                 <div>
-                    <button type="button" class="btn btn-link">settings</button>
-                    <button type="button" class="btn btn-link">log out</button>
+                    <a href="/settings/"><button type="button" class="btn btn-link">settings</button></a>
+                    <a href="/login/"><button type="button" class="btn btn-link">log out</button></a>
                 </div>
             </div>
             </div>
@@ -77,8 +76,8 @@
                     <div class="best_members_topic">
                         <h4 class="font-italic">Best members</h4></div>
                         <ol class="list-unstyled">
-                            {% for u in users %}
-                                <li><a href="#">{{ u.nickname }}</a></li>
+                            {% for user in users %}
+                                <li><a href="#">{{ user }}</a></li>
                             {% endfor %}
                         </ol>
                     </div>

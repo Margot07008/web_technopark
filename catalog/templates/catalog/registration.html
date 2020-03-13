@@ -2,25 +2,27 @@
 {% load static %}
 
 {% block page_name %}
-    ask_margot_edit_profile
+    ask_margot_registration
 {% endblock %}
 
 {% block page_style %}
 <link rel="stylesheet" href="{% static 'css/ask.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
 {% block header %}
         <div class="col ask_me">
-            <a href="/ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href="/registration/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
 {% endblock %}
 
 {% block content %}
     <div class="new_questoin">
         <div class="new_questoin_lable">
-            <h3>Settings: {{ request.user }}</h3>
+            <h3>Registration</h3>
         </div>
         <form method="POST" action="/settings/">
             {%  csrf_token%}
@@ -33,7 +35,7 @@
             <div class="form-group row mb-4 ">
                 <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Email</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control form-control-lg" id="edit" placeholder="{{ request.user.email }}" name="email">
+                    <input type="text" class="form-control form-control-lg" id="edit" placeholder="example@example.example" name="email">
                 </div>
             </div>
             <div class="form-group row mb-4 ">
@@ -42,11 +44,21 @@
                     <input type="text" class="form-control form-control-lg" id="edit" placeholder="{{ request.user.nickname }}" name="nickname">
                 </div>
             </div>
+            <div class="form-group row mb-4 ">
+                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Password</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control form-control-lg" id="login" name="password">
+                </div>
+            </div>
+            <div class="form-group row mb-4 ">
+                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Repeat Password</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control form-control-lg" id="login" name="password">
+                </div>
+            </div>
              <div class="form-group row mb-4 ">
                 <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Upload avatar</label>
-                 <div class="avatar"
-                     style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
-                             background-size: contain"></div>
+
                 <input type="file" class="form-control-lg" id="exampleFormControlFile1" name="img">
             </div>
 
