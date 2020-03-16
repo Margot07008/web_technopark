@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.generic.edit import UpdateView
 
 from .models import Question, UserProfile, Tag, Answer
 
@@ -22,10 +23,6 @@ def ask_margot_not_log(request):
     # tag = Tag.objects.all()
     return render(request, 'catalog/base.html', {'questions': question})
 
-
-def profile_settings(request):
-    user = UserProfile.objects.all()
-    return render(request, 'catalog/settings.html', {'user': user})
 
 
 def add_new_question(request):
@@ -47,22 +44,6 @@ def add_new_question(request):
     return redirect('ask_margot')
 
 
-def editiing_profile(request):
-    if request.method == 'GET':
-        tag = Tag.objects.all()
-        users = UserProfile.objects.all()
-        return render(request, 'catalog/settings.html',
-                      {'tags': tag, 'users': users})
-    elif request.method == "POST":
-        u = request.user
-        u.nickname = request.POST.get('nickname')
-        u.email = request.POST.get('email')
-        u.profile_image = request.POST.get('img')
-        u.login = request.POST.get('login')
-
-        u.save()
-
-    return redirect('/settings')
 
 
 def question_page(request, question_id):
@@ -78,8 +59,11 @@ def question_page(request, question_id):
 def login_view(request):
     class LoginForm(forms.Form):
         login = forms.CharField()
-        password = forms.CharField()
+        password = forms.CharField(widget=forms.PasswordInput())
 
+    if request.method == 'GET':
+        return render(request, 'catalog/login.html',
+                      {'form': LoginForm})
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -87,15 +71,56 @@ def login_view(request):
                                 password=form.cleaned_data['password'])
             if user is None:
                 return render(request, 'catalog/login.html',
-                              {'error': 'Неверный логин и/или пароль'})
+                              {'error': 'Неверный логин и/или пароль', 'form': form})
             login(request, user)
             return redirect('ask_margot')
         return render(request, 'catalog/login.html',
-                      {'error': 'Заполните формы корректно'})
+                      {'error': 'Заполните формы корректно', 'form': form})
     else:
         if request.user.is_authenticated:
             return redirect('ask_margot')
         return render(request, 'catalog/login.html')
+
+
+def settings_view(request):
+    class SettingsForm(UpdateView):
+        model = User
+        fields = ['login']
+
+        template_name_suffix = '_update_form'
+
+        login = forms.CharField(required=False)
+        email = forms.EmailField(required=False)
+        nickname = forms.CharField(required=False)
+        # avatar = forms.ImageField()
+
+    class SettingsFormPOST(forms.Form):
+
+        login = forms.CharField(required=False)
+        email = forms.EmailField(required=False)
+        nickname = forms.CharField(required=False)
+
+    if request.method == "GET":
+        return render(request, 'catalog/settings.html', {'form': SettingsFormPOST})
+    elif request.method == "POST":
+        form = SettingsForm(request.POST, request.FILES)
+    #     if not form.is_valid():
+    #         return render(request, 'catalog/settings.html', {'form': form})
+    #     user = request.user
+    #     username = form.cleaned_data['login']
+    #     email = form.cleaned_data['email']
+    #     if login != '':
+    #         pass
+    #     if email != '':
+    #         user = User.objects.update(email=email)
+    #         UserProfile.objects.update(user=user)
+    #
+    #
+    #     login(request, user)
+    #     return redirect('ask_margot')
+    else:
+        return HttpResponse(status=405)
+
 
 
 def logout_view(request):
@@ -109,9 +134,9 @@ def registration_view(request):
         login = forms.CharField()
         email = forms.EmailField()
         nickname = forms.CharField()
-        password = forms.CharField(widget=forms.PasswordInput())
-        repeat_password = forms.CharField(widget=forms.PasswordInput())
-        avatar = forms.ImageField()
+        password = forms.CharField(widget=forms.PasswordInput)
+        repeat_password = forms.CharField(widget=forms.PasswordInput)
+        # avatar = forms.ImageField()
 
     if request.method == 'GET':
         return render(request, 'catalog/registration.html',

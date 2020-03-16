@@ -1,5 +1,7 @@
 {% extends 'catalog/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
+
 
 {% block page_name %}
     ask_margot_edit_profile
@@ -24,31 +26,11 @@
         </div>
         <form method="POST" action="/settings/">
             {%  csrf_token%}
-            <div class="form-group row mb-4 ">
-                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">login</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control form-control-lg" id="edit" placeholder="{{ request.user.login}}" name="login">
-                </div>
-            </div>
-            <div class="form-group row mb-4 ">
-                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control form-control-lg" id="edit" placeholder="{{ request.user.email }}" name="email">
-                </div>
-            </div>
-            <div class="form-group row mb-4 ">
-                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">NickName</label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control form-control-lg" id="edit" placeholder="{{ request.user.nickname }}" name="nickname">
-                </div>
-            </div>
-             <div class="form-group row mb-4 ">
-                <label for="edit" class="col-sm-2 col-form-label col-form-label-lg">Upload avatar</label>
-                 <div class="avatar"
-                     style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
-                             background-size: contain"></div>
-                <input type="file" class="form-control-lg" id="exampleFormControlFile1" name="img">
-            </div>
+             {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            {{ form|crispy }}
 
             <div class="col ask_me_btn">
         <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="edit" type="submit">SAVE</button>
