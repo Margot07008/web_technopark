@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://use.fontawesome.com/71bed39430.js"></script>
+    <script src="https://use.fontawesome.com/71bed39430.js"></script>
     {% block page_style %}
     {% endblock %}
 </head>
@@ -22,11 +22,15 @@
             </form>
         </div>
         {% block header %}
-            {% endblock %}
+        {% endblock %}
         {% if request.user.is_anonymous %}
             <div>
-                <a href="/login/"><button type="button" class="btn btn-link">log in</button></a>
-                <a href="/registration/"><button type="button" class="btn btn-link">Register</button></a>
+                <a href="/login/">
+                    <button type="button" class="btn btn-link">log in</button>
+                </a>
+                <a href="/registration/">
+                    <button type="button" class="btn btn-link">Register</button>
+                </a>
             </div>
         {% else %}
             <div class="log_user">
@@ -35,8 +39,12 @@
                              background-size: contain"></div>
                 <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar">{{ request.user }}</a>
                 <div>
-                    <a href="/settings/"><button type="button" class="btn btn-link">settings</button></a>
-                    <a href="/login/"><button type="button" class="btn btn-link">log out</button></a>
+                    <a href="/settings/">
+                        <button type="button" class="btn btn-link">settings</button>
+                    </a>
+                    <a href="/logout/">
+                        <button type="button" class="btn btn-link">log out</button>
+                    </a>
                 </div>
             </div>
             </div>
@@ -73,8 +81,8 @@
                 </div>
                 <div class="best_members">
                     <div class="p-3">
-                    <div class="best_members_topic">
-                        <h4 class="font-italic">Best members</h4></div>
+                        <div class="best_members_topic">
+                            <h4 class="font-italic">Best members</h4></div>
                         <ol class="list-unstyled">
                             {% for user in users %}
                                 <li><a href="#">{{ user }}</a></li>

@@ -9,11 +9,8 @@ import datetime
 # def get_image_path(instance, filename):
 #   return os.path.join('images', str(instance.id), filename)
 
-# Create your models here.
 class UserProfile(models.Model):
-    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=25, null=True)
     profile_image = models.ImageField(blank=True, null=True)
     date_reg = models.DateField(auto_now_add=True)
     rating = models.FloatField(editable=False, default=0)
@@ -23,7 +20,7 @@ class UserProfile(models.Model):
         self.save()
 
     def __str__(self):
-        return self.nickname
+        return self.user.username
 
 
 class Tag(models.Model):
@@ -34,7 +31,6 @@ class Tag(models.Model):
 
 
 class Question(models.Model):
-    id = models.AutoField(primary_key=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     header = models.CharField(max_length=255)
     body_quest = models.TextField()
