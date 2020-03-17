@@ -43,17 +43,45 @@ def add_new_question(request):
         q.save()
 
     return redirect('ask_margot')
+#
+# def add_new_answer(request, question_id):
+#     if request.method == 'GET':
+#         tag = Tag.objects.all()
+#         question = Question.objects.all()
+#         user = UserProfile.objects.all()
+#         answer = Answer.objects.filter(question_id=question_id)
+#         return render(request, 'catalog/question.html', {'questions' : question, 'users': user, 'tags': tag, 'answers': answer})
+#     elif request.method == "POST":
+#         a = Answer.objects.creat(
+#             author=request.user,
+#             question_id=question_id,
+#             body_answer=request.POST.get("text")
+#         )
+#         a.save()
+#     return redirect('ask_margot')
 
 
 
 def question_page(request, question_id):
-    user = UserProfile.objects.all()
-    question = Question.objects.get(id=question_id)
-    tags = question.tag.all()
-    answer = Answer.objects.filter(question_id=question_id)
+    if request.method == 'GET':
+        user = UserProfile.objects.all()
+        question = Question.objects.get(id=question_id)
+        tags = question.tag.all()
+        answer = Answer.objects.filter(question_id=question_id)
 
-    return render(request, 'catalog/question.html',
-                  {'questions': question, 'answers': answer})
+        return render(request, 'catalog/question.html',
+                      {'questions': question, 'answers': answer})
+
+    elif request.method == "POST":
+        a = Answer.objects.create(
+            author=request.user,
+            question_id=question_id,
+            body_answer=request.POST.get("text")
+        )
+        a.save()
+
+    return redirect('question', question_id)
+
 
 
 

@@ -47,7 +47,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body_answer = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
