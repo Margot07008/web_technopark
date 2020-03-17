@@ -46,7 +46,6 @@ def add_new_question(request):
 
 
 
-
 def question_page(request, question_id):
     user = UserProfile.objects.all()
     question = Question.objects.get(id=question_id)
@@ -55,6 +54,8 @@ def question_page(request, question_id):
 
     return render(request, 'catalog/question.html',
                   {'questions': question, 'answers': answer})
+
+
 
 
 def login_view(request):
@@ -149,3 +150,4 @@ def registration_view(request):
         return redirect('ask_margot')
     else:
         return HttpResponse(status=405)
+
