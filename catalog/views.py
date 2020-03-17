@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -82,45 +83,32 @@ def login_view(request):
         return render(request, 'catalog/login.html')
 
 
+@login_required(login_url='/login')
 def settings_view(request):
-    class SettingsForm(UpdateView):
-        model = User
-        fields = ['login']
+    class EditProfileForm(forms.Form):
+        login = forms.CharField(label='Username',required=False)
+        email = forms.EmailField(label='Email', required=False)
+        nickname = forms.CharField(label='nickname', required=False)
+        avatar = forms.ImageField(required=False)
 
-        template_name_suffix = '_update_form'
+    context={}
 
-        login = forms.CharField(required=False)
-        email = forms.EmailField(required=False)
-        nickname = forms.CharField(required=False)
-        # avatar = forms.ImageField()
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES)
+        if not form.is_valid():
+            context.update({'error' : 'Something wrong with data', 'form' : EditProfileForm()})
+            return render(request,'catalog/settings.html',context=context)
 
-    class SettingsFormPOST(forms.Form):
-
-        login = forms.CharField(required=False)
-        email = forms.EmailField(required=False)
-        nickname = forms.CharField(required=False)
-
-    if request.method == "GET":
-        return render(request, 'catalog/settings.html', {'form': SettingsFormPOST})
-    elif request.method == "POST":
-        form = SettingsForm(request.POST, request.FILES)
-    #     if not form.is_valid():
-    #         return render(request, 'catalog/settings.html', {'form': form})
-    #     user = request.user
-    #     username = form.cleaned_data['login']
-    #     email = form.cleaned_data['email']
-    #     if login != '':
-    #         pass
-    #     if email != '':
-    #         user = User.objects.update(email=email)
-    #         UserProfile.objects.update(user=user)
-    #
-    #
-    #     login(request, user)
-    #     return redirect('ask_margot')
-    else:
-        return HttpResponse(status=405)
-
+        user = request.user
+        temp_user =  UserProfile.objects.get(user=request.user)
+        temp_user.login = request.POST['login']
+        temp_user.email = request.POST['email']
+        temp_user.nickname = request.POST['nickname']
+        temp_user.save()
+        return redirect('ask_margot')
+    form = EditProfileForm()
+    context.update({'form':form})
+    return render(request, 'catalog/settings.html', context=context)
 
 
 def logout_view(request):
