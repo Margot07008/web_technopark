@@ -5,16 +5,32 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Question, UserProfile, Tag, Answer
 
 
 # Create your views here.
-def ask_margot(request):
-    questions = Question.objects.all().order_by('-create_date')
-    user = UserProfile.objects.all()
-    tag = Tag.objects.all()
-    return render(request, 'catalog/index.html', {'questions': questions})
+
+def post_list(request):
+    object_list = Question.objects.all().order_by('-create_date')
+    paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # Если страница не является целым числом, поставим первую страницу
+        posts = paginator.page(1)
+    except EmptyPage:
+        # Если страница больше максимальной, доставить последнюю страницу результатов
+        posts = paginator.page(paginator.num_pages)
+    return render(request,
+	          'catalog/index.html', {'page': page, 'questions': posts})
+
+
+# def ask_margot(request):
+#     questions = Question.objects.all().order_by('-create_date')
+#     return render(request, 'catalog/index.html', {'questions': questions})
 
 
 # Create your views here.
@@ -43,34 +59,25 @@ def add_new_question(request):
         q.save()
 
     return redirect('ask_margot')
-#
-# def add_new_answer(request, question_id):
-#     if request.method == 'GET':
-#         tag = Tag.objects.all()
-#         question = Question.objects.all()
-#         user = UserProfile.objects.all()
-#         answer = Answer.objects.filter(question_id=question_id)
-#         return render(request, 'catalog/question.html', {'questions' : question, 'users': user, 'tags': tag, 'answers': answer})
-#     elif request.method == "POST":
-#         a = Answer.objects.creat(
-#             author=request.user,
-#             question_id=question_id,
-#             body_answer=request.POST.get("text")
-#         )
-#         a.save()
-#     return redirect('ask_margot')
 
 
 
 def question_page(request, question_id):
     if request.method == 'GET':
-        user = UserProfile.objects.all()
         question = Question.objects.get(id=question_id)
-        tags = question.tag.all()
-        answer = Answer.objects.filter(question_id=question_id)
-
-        return render(request, 'catalog/question.html',
-                      {'questions': question, 'answers': answer})
+        object_list = Answer.objects.filter(question_id=question_id).order_by('-create_date')
+        paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # Если страница не является целым числом, поставим первую страницу
+            posts = paginator.page(1)
+        except EmptyPage:
+            # Если страница больше максимальной, доставить последнюю страницу результатов
+            posts = paginator.page(paginator.num_pages)
+        return render(request,
+                      'catalog/question.html', {'page': page, 'questions': question, 'answers': posts})
 
     elif request.method == "POST":
         a = Answer.objects.create(
