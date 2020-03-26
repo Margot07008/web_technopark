@@ -70,7 +70,7 @@
                 {% endfor %}
     </div>
 
-    <form method="POST" action="/question/{{ questions.id }}">
+    <form method="POST" action={% url 'question' questions.id %}>
             {%  csrf_token%}
             <div class="form-group row mb-2">
                 <div class="col-lg-12">

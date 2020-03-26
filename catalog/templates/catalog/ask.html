@@ -12,11 +12,11 @@
 {% block header %}
     {% if request.user.is_anonymous  %}
         <div class="col ask_me">
-            <a href="register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={%  url 'registration' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% else %}
         <div class="col ask_me">
-            <a href=""><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'ask_margot' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% endif %}
 {% endblock %}
@@ -26,7 +26,7 @@
         <div class="new_questoin_lable">
             <h3>New question</h3>
         </div>
-        <form method="POST" action="/ask/">
+        <form method="POST" action={% url 'ask' %}>
             {%  csrf_token%}
             <div class="form-group row mb-4 ">
                 <label for="ask" class="col-sm-2 col-form-label col-form-label-lg">Title</label>

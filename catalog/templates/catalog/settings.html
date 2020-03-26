@@ -15,7 +15,7 @@
 
 {% block header %}
         <div class="col ask_me">
-            <a href="/ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'ask' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
 {% endblock %}
 
@@ -24,7 +24,7 @@
         <div class="new_questoin_lable">
             <h3>Settings: {{ request.user }}</h3>
         </div>
-        <form method="POST" action="/settings/">
+        <form method="POST" action={% url 'settings' %}>
             {%  csrf_token%}
              {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>

@@ -16,7 +16,7 @@
 
 {% block header %}
     <div class="col ask_me">
-        <a href="/registration/">
+        <a href={% url 'registration' %}>
             <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" type="submit">ASK ME</button>
         </a>
     </div>
@@ -27,7 +27,7 @@
         <div class="new_questoin_lable">
             <h3>Registration</h3>
         </div>
-        <form method="POST" action="/registration/">
+        <form method="POST" action={% url 'registration' %}>
             {% csrf_token %}
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>

@@ -25,10 +25,10 @@
         {% endblock %}
         {% if request.user.is_anonymous %}
             <div>
-                <a href="/login/">
+                <a href={%  url 'login'%}>
                     <button type="button" class="btn btn-link">log in</button>
                 </a>
-                <a href="/registration/">
+                <a href={% url 'registration' %}>
                     <button type="button" class="btn btn-link">Register</button>
                 </a>
             </div>
@@ -39,14 +39,13 @@
                              background-size: contain"></div>
                 <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar">{{ request.user }}</a>
                 <div>
-                    <a href="/settings/">
+                    <a href={% url 'settings' %}>
                         <button type="button" class="btn btn-link">settings</button>
                     </a>
-                    <a href="/logout/">
+                    <a href={% url 'logout' %}>
                         <button type="button" class="btn btn-link">log out</button>
                     </a>
                 </div>
-            </div>
             </div>
         {% endif %}
 

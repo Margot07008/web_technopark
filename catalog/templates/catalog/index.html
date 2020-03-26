@@ -12,11 +12,11 @@
 {% block header %}
     {% if request.user.is_anonymous  %}
         <div class="col ask_me">
-            <a href="/registration/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href="{% url 'registration' %}"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% else %}
         <div class="col ask_me">
-            <a href="/ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href="{% url 'ask' %}"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% endif %}
 {% endblock %}
@@ -73,7 +73,9 @@
             </ul>
         {% endfor %}
     </div>
-    {% include "../inc/pagination.html" with page=questions %}
+    {% if questions %}
+        {% include "../inc/pagination.html" with page=questions %}
+    {% endif %}
 {% endblock %}
 
 <script>
