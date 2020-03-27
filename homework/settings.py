@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.conf.global_settings import AUTH_USER_MODEL
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -26,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'catalog.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'crispy_forms',
+    # 'core.apps.CoreConfig'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

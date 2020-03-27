@@ -1,29 +1,28 @@
-from django.contrib.auth.models import User
-from django.db import models
-from django.utils import timezone
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
 from django.db.models import Sum
-
-import os
-import datetime
+from django.utils import timezone
 
 
 # def get_image_path(instance, filename):
 #   return os.path.join('images', str(instance.id), filename)
 
-class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class User(AbstractUser):
+
     profile_image = models.ImageField(blank=True, null=True)
-    date_reg = models.DateField(auto_now_add=True)
+    # date_reg = models.DateField(auto_now_add=True)
     rating = models.FloatField(editable=False, default=0)
 
-    def publish(self):
-        self.date_reg = timezone.now()
-        self.save()
+    # def publish(self):
+    #     self.create_date = timezone.now()
+    #     self.save()
 
     def __str__(self):
-        return self.user.username
+        return self.username
+
+
 
 
 class Tag(models.Model):
@@ -47,7 +46,6 @@ class LikeDislikeManager(models.Manager):
     def sum_rating(self):
         # Забираем суммарный рейтинг
         return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
-
 
 class LikeDislike(models.Model):
     LIKE = 1

@@ -14,7 +14,7 @@ import json
 from django.views import View
 from django.contrib.contenttypes.models import ContentType
 
-from .models import Question, UserProfile, Tag, Answer, LikeDislike
+from .models import Question, User, Tag, Answer, LikeDislike
 
 
 # Create your views here.
@@ -35,15 +35,11 @@ def post_list(request):
 	          'catalog/index.html', {'page': page, 'questions': posts})
 
 
-# def ask_margot(request):
-#     questions = Question.objects.all().order_by('-create_date')
-#     return render(request, 'catalog/index.html', {'questions': questions})
-
 
 # Create your views here.
 def ask_margot_not_log(request):
     question = Question.objects.all()
-    user = UserProfile.objects.all()
+    user = User.objects.all()
     # tag = Tag.objects.all()
     return render(request, 'catalog/base.html', {'questions': question})
 
@@ -53,7 +49,7 @@ def add_new_question(request):
     if request.method == 'GET':
         tag = Tag.objects.all()
         question = Question.objects.all()
-        user = UserProfile.objects.all()
+        user = User.objects.all()
         return render(request, 'catalog/ask.html',
                       {'tags': tag, 'questions': question, 'users': user})
     elif request.method == "POST":
@@ -97,12 +93,9 @@ def question_page(request, question_id):
     return redirect('question', question_id)
 
 
-
-
-
 def login_view(request):
     class LoginForm(forms.Form):
-        login = forms.CharField()
+        username = forms.CharField()
         password = forms.CharField(widget=forms.PasswordInput())
 
     if request.method == 'GET':
@@ -111,7 +104,7 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['login'],
+            user = authenticate(username=form.cleaned_data['username'],
                                 password=form.cleaned_data['password'])
             if user is None:
                 return render(request, 'catalog/login.html',
@@ -143,7 +136,7 @@ def settings_view(request):
             return render(request,'catalog/settings.html',context=context)
 
         user = request.user
-        temp_user =  UserProfile.objects.get(user=request.user)
+        temp_user =  User.objects.get(request.user)
         temp_user.login = request.POST['login']
         temp_user.email = request.POST['email']
         temp_user.nickname = request.POST['nickname']
@@ -162,9 +155,11 @@ def logout_view(request):
 
 def registration_view(request):
     class RegistrationForm(forms.Form):
-        login = forms.CharField()
+        username = forms.CharField()
+        first_name = forms.CharField()
+        last_name = forms.CharField()
         email = forms.EmailField()
-        nickname = forms.CharField()
+
         password = forms.CharField(widget=forms.PasswordInput)
         repeat_password = forms.CharField(widget=forms.PasswordInput)
         # avatar = forms.ImageField()
@@ -177,17 +172,24 @@ def registration_view(request):
         if not form.is_valid():
             return render(request, 'catalog/registration.html', {'form': form})
 
-        username = form.cleaned_data['nickname']
+        username = form.cleaned_data['username']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
         password = form.cleaned_data['password']
         repeat_password = form.cleaned_data['repeat_password']
         if password != repeat_password:
             return render(request, 'catalog/registration.html',
                           {'form': form, 'error': 'Пароли не совпадают'})
 
+        if User.objects.filter(username=username).exists():
+            return render (request, 'catalog/registration.html',
+                          {'form': form, 'error': 'Пользователь уже существует'})
         user = User.objects.create(email=form.cleaned_data['email'],
                                    password=password,
-                                   username=username)
-        UserProfile.objects.create(user=user)
+                                   username=username,
+                                   first_name=first_name,
+                                   last_name=last_name
+                                   )
         login(request, user)
         return redirect('ask_margot')
     else:
