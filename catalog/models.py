@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -9,20 +9,19 @@ from django.utils import timezone
 # def get_image_path(instance, filename):
 #   return os.path.join('images', str(instance.id), filename)
 
-class User(AbstractUser):
-
-    profile_image = models.ImageField(blank=True, null=True)
-    # date_reg = models.DateField(auto_now_add=True)
-    rating = models.FloatField(editable=False, default=0)
-
-    # def publish(self):
-    #     self.create_date = timezone.now()
-    #     self.save()
-
-    def __str__(self):
-        return self.username
-
-
+# class User(AbstractUser):
+#
+#     profile_image = models.ImageField(blank=True, null=True)
+#     # date_reg = models.DateField(auto_now_add=True)
+#     rating = models.FloatField(editable=False, default=0)
+#
+#     # def publish(self):
+#     #     self.create_date = timezone.now()
+#     #     self.save()
+#
+#     def __str__(self):
+#         return self.username
+from core.models import User
 
 
 class Tag(models.Model):

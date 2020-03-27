@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'catalog.User'
+AUTH_USER_MODEL = 'core.User'
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalog',
+    'core',
     'crispy_forms',
     # 'core.apps.CoreConfig'
 ]
