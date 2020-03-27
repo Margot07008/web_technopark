@@ -1,0 +1,60 @@
+.right_table {
+    width: 100%;
+    background-color: #343a40;
+
+}
+
+.right_table h3 {
+    text-align: center;
+}
+
+.best_members{
+    background-color: white;
+}
+
+
+.popular_tags{
+    display: block;
+}
+
+.popular_tags h3{
+    margin-top: 8px;
+    color: white;
+}
+
+.tags{
+    text-align: center;
+    padding: 0 20px;
+    margin: 10px 0;
+}
+
+.tags .tag {
+    margin: 5px 5px;
+}
+
+.avatar {
+    width: 100px;
+}
+
+.slide_bar{
+    position: fixed !important;
+    right: 0;
+}
+
+.best_members_topic{
+    justify-content: center;
+    display: flex;
+}
+
+
+.user_name_navbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 12px;
+
+}
+
+.log_user{
+    display: inherit;
+}

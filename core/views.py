@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django import forms
 from django.contrib.auth import authenticate, login, logout
@@ -5,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 # Create your views here.
@@ -21,12 +24,12 @@ def registration_view(request):
         # avatar = forms.ImageField()
 
     if request.method == 'GET':
-        return render(request, 'catalog/registration.html',
+        return render(request, 'core/registration.html',
                       {'form': RegistrationForm})
     elif request.method == 'POST':
         form = RegistrationForm(request.POST, request.FILES)
         if not form.is_valid():
-            return render(request, 'catalog/registration.html', {'form': form})
+            return render(request, 'core/registration.html', {'form': form})
 
         username = form.cleaned_data['username']
         first_name = form.cleaned_data['first_name']
@@ -34,11 +37,11 @@ def registration_view(request):
         password = form.cleaned_data['password']
         repeat_password = form.cleaned_data['repeat_password']
         if password != repeat_password:
-            return render(request, 'catalog/registration.html',
+            return render(request, 'core/registration.html',
                           {'form': form, 'error': 'Пароли не совпадают'})
 
         if User.objects.filter(username=username).exists():
-            return render (request, 'catalog/registration.html',
+            return render (request, 'core/registration.html',
                           {'form': form, 'error': 'Пользователь уже существует'})
         user = User.objects.create(email=form.cleaned_data['email'],
                                    password=password,
@@ -58,7 +61,7 @@ def login_view(request):
         password = forms.CharField(widget=forms.PasswordInput())
 
     if request.method == 'GET':
-        return render(request, 'catalog/login.html',
+        return render(request, 'core/login.html',
                       {'form': LoginForm})
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -66,20 +69,58 @@ def login_view(request):
             user = authenticate(username=form.cleaned_data['username'],
                                 password=form.cleaned_data['password'])
             if user is None:
-                return render(request, 'catalog/login.html',
+                return render(request, 'core/login.html',
                               {'error': 'Неверный логин и/или пароль', 'form': form})
             login(request, user)
             return redirect('ask_margot')
-        return render(request, 'catalog/login.html',
+        return render(request, 'core/login.html',
                       {'error': 'Заполните формы корректно', 'form': form})
     else:
         if request.user.is_authenticated:
             return redirect('ask_margot')
-        return render(request, 'catalog/login.html')
+        return render(request, 'core/login.html')
 
 
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('ask_margot')
+
+
+def settings_view(request):
+    class EditForm(forms.Form):
+        username = forms.CharField(required=False)
+        first_name = forms.CharField(required=False)
+        last_name = forms.CharField(required=False)
+        email = forms.EmailField(required=False)
+
+        password = forms.CharField(widget=forms.PasswordInput, required=False)
+        # avatar = forms.ImageField()
+
+    if request.method == 'GET':
+        return render(request, 'core/settings.html',
+                      {'form': EditForm})
+    elif request.method == 'POST':
+        form = EditForm(request.POST, request.FILES)
+        if not form.is_valid():
+            return render(request, 'core/settings.html', {'form': form})
+
+        username = form.cleaned_data['username']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        password = form.cleaned_data['password']
+
+        if User.objects.filter(username=username).exists():
+            return render(request, 'core/settings.html',
+                          {'form': form, 'error': 'Пользователь уже существует'})
+        user = User.objects.update(
+                                    email=form.cleaned_data['email'],
+        #                            password=password,
+        #                            first_name=first_name,
+                                   # last_name=last_name
+                                   )
+        login(request)
+        return redirect('settings')
+    else:
+        return HttpResponse(status=405)
 
