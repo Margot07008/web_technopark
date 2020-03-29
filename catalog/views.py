@@ -18,7 +18,12 @@ User = get_user_model()
 
 
 def post_list(request):
-    object_list = Question.objects.all().order_by('-create_date')
+    if request.GET.get('answered') is not None:
+        sort_key = '-total_answers'
+    else:
+        sort_key = '-create_date'
+
+    object_list = Question.objects.all().order_by(sort_key)
     paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
     page = request.GET.get('page')
     try:

@@ -22,8 +22,8 @@
 {% endblock %}
 {% block content %}
     <div class="select_questions row collapse-toggle">
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0"><a href={% url 'ask_margot'  %}>New questions</a></button>
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0"><a href={% url 'ask_margot'  %}>Best questions</a></button>
+        <button class="col btn btn-lg btn-dark btn-primary rounded-0"><a href={% url 'ask_margot' %}>New questions</a></button>
+        <button class="col btn btn-lg btn-dark btn-primary rounded-0"><a href="?answered">Popular questions</a></button>
     </div>
     <div class="tape">
         {% for q in questions %}

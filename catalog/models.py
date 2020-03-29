@@ -7,8 +7,11 @@ from django.utils import timezone
 
 from core.models import User
 
+class TagManager(models.Manager):
+    pass
 
 class Tag(models.Model):
+    objects = TagManager()
     tag_name = models.TextField()
 
     def __str__(self):
