@@ -66,9 +66,8 @@
                             {% endfor %}
 
                         </div>
-
                     </div>
-                    <div class="best_members_topic"><a  href="/question/{{ q.id }}" >answers</a></div>
+                    <div class="best_members_topic"><a  href="/question/{{ q.id }}" >{{ q.total_answers }} answers</a></div>
                 </li>
             </ul>
         {% endfor %}
