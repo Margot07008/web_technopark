@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django import forms
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -45,33 +46,46 @@ def add_new_question(request):
     return render(request, 'catalog/ask.html')
 
 
+class AnswerForm(forms.Form):
+    body_answer = forms.CharField(label='Your anwer', widget=forms.Textarea(attrs={'rows':'3'}))
+
+
 
 def question_page(request, question_id):
-    if request.method == 'GET':
-        question = Question.objects.get(id=question_id)
-        object_list = Answer.objects.filter(question_id=question_id).order_by('-create_date')
-        paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            # Если страница не является целым числом, поставим первую страницу
-            posts = paginator.page(1)
-        except EmptyPage:
-            # Если страница больше максимальной, доставить последнюю страницу результатов
-            posts = paginator.page(paginator.num_pages)
-        return render(request,
-                      'catalog/question.html', {'page': page, 'questions': question, 'answers': posts})
+    print(request.user)
+    question = Question.objects.get(pk=question_id)
+    context = {}
+    # if request.method == 'GET':
+    #     question = Question.objects.get(id=question_id)
+    #     object_list = Answer.objects.filter(question_id=question_id).order_by('-create_date')
+    #     paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
+    #     page = request.GET.get('page')
+    #     try:
+    #         posts = paginator.page(page)
+    #     except PageNotAnInteger:
+    #         # Если страница не является целым числом, поставим первую страницу
+    #         posts = paginator.page(1)
+    #     except EmptyPage:
+    #         # Если страница больше максимальной, доставить последнюю страницу результатов
+    #         posts = paginator.page(paginator.num_pages)
+    #     return render(request,
+    #                   'catalog/question.html', {'page': page, 'questions': question, 'answers': posts})
 
-    elif request.method == "POST":
-        a = Answer.objects.create(
-            author=request.user,
-            question_id=question_id,
-            body_answer=request.POST.get("text")
-        )
-        a.save()
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = Answer.objects.create_answer(author=request.user, question=question, body_answer=form.cleaned_data['body_answer'])
+            answer.save()
+            return redirect('question', question.id)
+        else:
+            context.update({'error' : 'Invalid answer`s data'})
 
-    return redirect('question', question_id)
+    answers = Answer.objects.filter(question=question_id).order_by('-create_date')
+    form = AnswerForm()
+    context.update({'form' : form, 'question' : question, 'answers':answers})
+
+    return render(request, 'catalog/question.html', context=context)
+
 
 
 

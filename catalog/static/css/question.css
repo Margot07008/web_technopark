@@ -15,7 +15,6 @@
      display: inline-flex;
     width: 100%;
     max-height: 220px;
-    overflow: auto;
 }
 
 .body_question{

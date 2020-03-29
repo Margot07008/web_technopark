@@ -73,7 +73,7 @@ class Question(models.Model):
     body_quest = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     tag = models.ManyToManyField(Tag, blank=True)
-    total_answer = models.IntegerField(default=0)
+    total_answers = models.IntegerField(default=0)
     votes = GenericRelation(LikeDislike, related_query_name='question')
 
 
@@ -85,9 +85,18 @@ class Question(models.Model):
         return self.header
 
 
+class AnswerManager(models.Manager):
+    def create_answer(self, author, question, body_answer):
+        answer = self.create(author=author, question=question, body_answer=body_answer)
+        question = Question.objects.get(pk=question.id)
+        question.total_answers += 1
+        question.save(update_fields=['total_answers'])
+
+        return answer
 
 
 class Answer(models.Model):
+    objects = AnswerManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body_answer = models.TextField()
