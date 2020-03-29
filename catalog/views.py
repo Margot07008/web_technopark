@@ -15,7 +15,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# Create your views here.
 
 def post_list(request):
     object_list = Question.objects.all().order_by('-create_date')
@@ -33,33 +32,17 @@ def post_list(request):
 	          'catalog/index.html', {'page': page, 'questions': posts})
 
 
-
-# Create your views here.
-def ask_margot_not_log(request):
-    question = Question.objects.all()
-    user = User.objects.all()
-    # tag = Tag.objects.all()
-    return render(request, 'catalog/base.html', {'questions': question})
-
-
-
 def add_new_question(request):
-    if request.method == 'GET':
-        tag = Tag.objects.all()
-        question = Question.objects.all()
-        user = User.objects.all()
-        return render(request, 'catalog/ask.html',
-                      {'tags': tag, 'questions': question, 'users': user})
-    elif request.method == "POST":
-        q = Question.objects.create(
-            author=request.user,
-            header=request.POST.get("title"),
-            body_quest=request.POST.get("text")
-        )
-        # q.tag = request.POST.set("tags")
-        q.save()
-
-    return redirect('ask_margot')
+    if request.method == "POST":
+        header = request.POST.get("header")
+        body_quest = request.POST.get("body_quest")
+        question = Question.objects.create_question(author=request.user, header=header, body_quest=body_quest)
+        if question is not None:
+            question.save()
+            print('kek')
+            return redirect('../question/{}'.format(question.id))
+        return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
+    return render(request, 'catalog/ask.html')
 
 
 

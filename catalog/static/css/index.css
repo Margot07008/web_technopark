@@ -23,7 +23,8 @@ div.select_questions {
     margin-left: 20px;
     margin-right: 20px;
         overflow: auto;
-    max-height: 150px;
+    margin-top: 5px;
+    max-height: 186px;
 
 }
 
