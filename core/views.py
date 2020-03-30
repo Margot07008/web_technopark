@@ -38,19 +38,27 @@ def registration_view(request):
         repeat_password = form.cleaned_data['repeat_password']
         if password != repeat_password:
             return render(request, 'core/registration.html',
-                          {'form': form, 'error': 'Пароли не совпадают'})
+                          {'form': form, 'error': 'Passwords are not the same.'})
 
         if User.objects.filter(username=username).exists():
             return render (request, 'core/registration.html',
-                          {'form': form, 'error': 'Пользователь уже существует'})
-        user = User.objects.create(email=form.cleaned_data['email'],
+                          {'form': form, 'error': 'Nickname "{}" already exist.'.format(username)})
+
+        user = User.objects.create_user(email=form.cleaned_data['email'],
                                    password=password,
                                    username=username,
                                    first_name=first_name,
                                    last_name=last_name
                                    )
-        login(request, user)
-        return redirect('ask_margot')
+        if user is not None:
+            user.save()
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+            return redirect('ask_margot')
+        else:
+            return render(request, 'core/registration.html',
+                          {'form': form, 'error': 'Server error'})
     else:
         return HttpResponse(status=405)
 
@@ -66,8 +74,8 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'],
-                                password=form.cleaned_data['password'])
+            user = authenticate(username=request.POST['username'],
+                                password=request.POST['password'])
             if user is None:
                 return render(request, 'core/login.html',
                               {'error': 'Неверный логин и/или пароль', 'form': form})
@@ -97,30 +105,15 @@ def settings_view(request):
         password = forms.CharField(widget=forms.PasswordInput, required=False)
         # avatar = forms.ImageField()
 
-    if request.method == 'GET':
-        return render(request, 'core/settings.html',
-                      {'form': EditForm})
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = EditForm(request.POST, request.FILES)
         if not form.is_valid():
-            return render(request, 'core/settings.html', {'form': form})
+            return render(request, 'core/settings.html', {'form': form, 'error': 'Something wrong with data'})
 
-        username = form.cleaned_data['username']
-        first_name = form.cleaned_data['first_name']
-        last_name = form.cleaned_data['last_name']
-        password = form.cleaned_data['password']
-
-        if User.objects.filter(username=username).exists():
-            return render(request, 'core/settings.html',
-                          {'form': form, 'error': 'Пользователь уже существует'})
-        user = User.objects.update(
-                                    email=form.cleaned_data['email'],
-        #                            password=password,
-        #                            first_name=first_name,
-                                   # last_name=last_name
-                                   )
-        login(request)
+        user = request.user
+        User.objects.update_user(user, form.cleaned_data)
         return redirect('settings')
-    else:
-        return HttpResponse(status=405)
+
+    form = EditForm()
+    return render(request, 'core/settings.html', {'form': form})
 
