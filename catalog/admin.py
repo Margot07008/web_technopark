@@ -12,4 +12,4 @@ admin.site.register(Answer)
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'header')
-    filter_horizontal = ('tag', )
+    filter_horizontal = ('tags', )

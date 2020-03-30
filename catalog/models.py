@@ -8,11 +8,29 @@ from django.utils import timezone
 from core.models import User
 
 class TagManager(models.Manager):
-    pass
+
+    def add_tags(self, tag):
+        if Tag.objects.filter(tag_name=tag).exists():
+            tag = self.get(tag_name=tag)
+            tag.total += 1
+            tag.save(update_fields=['total'])
+        else:
+            tag = self.create(tag_name=tag)
+            tag.save()
+        return tag
+
+    @staticmethod
+    def format_tags(tags):
+        temp_tag = tags[:3]
+        while len(temp_tag) < 3:
+            tags.append(False)
+        return tags
+
 
 class Tag(models.Model):
     objects = TagManager()
     tag_name = models.TextField()
+    total = models.IntegerField(default=1)
 
     def __str__(self):
         return self.tag_name
@@ -63,9 +81,13 @@ class QuestionManager(models.Manager):
         author_id = kwargs['author']
         header = kwargs['header']
         body_quest = kwargs['body_quest']
-        # tag =
+        tags = TagManager.format_tags(kwargs['tags'])
+
         question = self.create(author=author_id, header=header, body_quest=body_quest)
         question.save()
+        for tag in tags:
+            current_tag = Tag.objects.add_tags(tag)
+            question.tags.add(current_tag)
         return question
 
 
@@ -75,7 +97,7 @@ class Question(models.Model):
     header = models.CharField(max_length=255)
     body_quest = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
-    tag = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag)
     total_answers = models.IntegerField(default=0)
     votes = GenericRelation(LikeDislike, related_query_name='question')
 

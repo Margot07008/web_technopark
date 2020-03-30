@@ -28,10 +28,10 @@
                 </div>
                 <div class="question_tags">
                     <label>Tags: </label>
-                    {% for t in tags %}
-                        {#                                {% if t in q.tag %}#}
+                    {% for t in question.tags.all %}
+
                         <a href="#" class="tags_style">  {{ t }}</a>
-                        {#                                {% endif %}#}
+
                     {% endfor %}
                 </div>
             </li>

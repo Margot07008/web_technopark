@@ -1,3 +1,4 @@
+from django.conf.global_settings import AUTHENTICATION_BACKENDS
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django import forms
@@ -8,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
 
 
 # Create your views here.
@@ -74,7 +76,7 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(username=request.POST['username'],
+            user = authenticate(request, username=request.POST['username'],
                                 password=request.POST['password'])
             if user is None:
                 return render(request, 'core/login.html',
@@ -92,7 +94,7 @@ def login_view(request):
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
-    return redirect('ask_margot')
+    return redirect('login')
 
 
 def settings_view(request):

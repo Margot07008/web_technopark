@@ -42,10 +42,10 @@ def add_new_question(request):
     if request.method == "POST":
         header = request.POST.get("header")
         body_quest = request.POST.get("body_quest")
-        question = Question.objects.create_question(author=request.user, header=header, body_quest=body_quest)
+        tags = request.POST.get("tags").split()
+        question = Question.objects.create_question(author=request.user, header=header, body_quest=body_quest, tags=tags)
         if question is not None:
             question.save()
-            print('kek')
             return redirect('../question/{}'.format(question.id))
         return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
     return render(request, 'catalog/ask.html')

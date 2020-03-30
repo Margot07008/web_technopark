@@ -1,8 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
+
+
 # Create your models here.
 
-class UserManager(models.Manager):
+class UserManager(UserManager):
     def update_user(self, user, cleaned_data):
         user_fields = ['username', 'first_name', 'last_name', 'email']
         fields_to_update = {'user': []}
@@ -22,7 +24,6 @@ class User(AbstractUser):
     objects = UserManager()
     profile_image = models.ImageField(blank=True, null=True)
     rating = models.FloatField(editable=False, default=0)
-
 
     def __str__(self):
         return self.username

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.urls import path, re_path
 from . import views
-from .models import LikeDislike, Question, Answer
+from .models import LikeDislike, Question, Answer, Tag
 
 urlpatterns = [
     path('', views.post_list, name='ask_margot'),
