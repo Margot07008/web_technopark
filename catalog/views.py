@@ -38,18 +38,25 @@ def post_list(request):
 	          'catalog/index.html', {'page': page, 'questions': posts})
 
 
+class QuestionForm(forms.Form):
+    header = forms.CharField(label="Title")
+    body_quest = forms.CharField(label="Text", widget=forms.Textarea(attrs={'rows':'3'}))
+    tags = forms.CharField(label="Tags", required=False)
+
 def add_new_question(request):
     if request.method == "POST":
-        header = request.POST.get("header")
-        body_quest = request.POST.get("body_quest")
-        tags = request.POST.get("tags").split()
-        question = Question.objects.create_question(author=request.user, header=header, body_quest=body_quest, tags=tags)
-        if question is not None:
-            question.save()
-            return redirect('../question/{}'.format(question.id))
-        return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
-    return render(request, 'catalog/ask.html')
 
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            tags = form.cleaned_data['tags'].split()
+            question = Question.objects.create_question(author=request.user, header=form.cleaned_data['header'], body_quest=form.cleaned_data['body_quest'], tags=tags)
+            if question is not None:
+                question.save()
+                return redirect('../question/{}'.format(question.id))
+            return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
+
+    form = QuestionForm()
+    return render(request, 'catalog/ask.html', {'form': form})
 
 class AnswerForm(forms.Form):
     body_answer = forms.CharField(label='Your anwer', widget=forms.Textarea(attrs={'rows':'3'}))
@@ -57,7 +64,6 @@ class AnswerForm(forms.Form):
 
 
 def question_page(request, question_id):
-    print(request.user)
     question = Question.objects.get(pk=question_id)
     context = {}
 

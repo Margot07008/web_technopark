@@ -19,12 +19,6 @@ class TagManager(models.Manager):
             tag.save()
         return tag
 
-    @staticmethod
-    def format_tags(tags):
-        temp_tag = tags[:3]
-        while len(temp_tag) < 3:
-            tags.append(False)
-        return tags
 
 
 class Tag(models.Model):
@@ -79,10 +73,13 @@ class LikeDislike(models.Model):
 class QuestionManager(models.Manager):
     def create_question(self, **kwargs):
         author_id = kwargs['author']
+        print(author_id)
         header = kwargs['header']
+        print(header)
         body_quest = kwargs['body_quest']
-        tags = TagManager.format_tags(kwargs['tags'])
-
+        print(body_quest)
+        tags = kwargs['tags']
+        print(tags)
         question = self.create(author=author_id, header=header, body_quest=body_quest)
         question.save()
         for tag in tags:

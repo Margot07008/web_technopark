@@ -27,52 +27,16 @@
     </div>
     <div class="tape">
         {% for q in questions %}
-            <ul class="list-group">
-                <li class="list-group-item text-left mb-2">
-                    <div class="one_question">
-                        <div class="color_question">
-                            <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
-                            <div>{{ q.author }}</div>
-                            <div>{{ q.create_date }}</div>
-                            {#                            <div>{{ q.rating }}#}
-                            {#                                <button class="like">#}
-                            {#                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>#}
-                            {#                                </button>#}
-                            {#                                <button class="dislike">#}
-                            {#                                    <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>#}
-                            {#                                </button>#}
-                            {#                            </div>#}
-                            <ul>
-                                <li data-id="{{ q.id }}" data-type="question" data-action="like" title="Нравится">
-                                    <span class="fa fa-thumbs-o-up"></span>
-                                    <span data-count="like">{{ q.votes.likes.count }}</span>
-                                </li>
-                                <li data-id="{{ q.id }}" data-type="question" data-action="dislike" title="Не нравится">
-                                    <span class="fa fa-thumbs-o-down"></span>
-                                    <span data-count="dislike">{{ q.votes.dislikes.count }}</span>
-                                </li>
-                            </ul>
-                        </div>
 
-                        <div class="header_question">
-                            <div class="header_question_text"><H4>{{ q.header }}</H4></div>
-                            <div class="body_question">{{ q.body_quest }}</div>
-                        </div>
-                        <div class="color_question">
-                            {% for tag in q.tag.all %}
-                                {#                                {% if t in q.tag %}#}
-                                <div><a href="#">  {{ tag }}</a></div>
-                                {#                                {% endif %}#}
-                            {% endfor %}
+        {% include "../inc/question.html" with question=q %}
 
-                        </div>
-                    </div>
-                    <div class="best_members_topic"><a  href="/question/{{ q.id }}" >{{ q.total_answers }} answers</a></div>
-                </li>
-            </ul>
+
+
+
         {% endfor %}
-    </div>
+
     {% if questions %}
         {% include "../inc/pagination.html" with page=questions %}
     {% endif %}
+    </div>
 {% endblock %}

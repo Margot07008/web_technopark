@@ -99,3 +99,12 @@ button.dislike{
 .header_question_text{
     text-align: center;
 }
+
+.question_tags{
+    display: flex;
+    justify-content: center;
+}
+
+.tags_style{
+    padding-left: 10px;
+}
