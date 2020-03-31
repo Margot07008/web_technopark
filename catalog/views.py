@@ -23,6 +23,7 @@ def post_list(request):
     else:
         sort_key = '-create_date'
 
+
     object_list = Question.objects.all().order_by(sort_key)
     paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
     page = request.GET.get('page')
