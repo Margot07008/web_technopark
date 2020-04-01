@@ -15,15 +15,13 @@ def post_list(request):
         sort_key = '-create_date'
 
     object_list = Question.objects.all().order_by(sort_key)
-    paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
+    paginator = Paginator(object_list, 3)
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
-        # Если страница не является целым числом, поставим первую страницу
         posts = paginator.page(1)
     except EmptyPage:
-        # Если страница больше максимальной, доставить последнюю страницу результатов
         posts = paginator.page(paginator.num_pages)
     return render(request,
 	          'catalog/index.html', {'page': page, 'questions': posts})
@@ -40,6 +38,8 @@ def add_new_question(request):
                 question.save()
                 return redirect('../question/{}'.format(question.id))
             return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
+        else:
+            return render(request, 'catalog/ask.html', {'error': 'Something wrong with data'})
 
     form = QuestionForm()
     return render(request, 'catalog/ask.html', {'form': form})

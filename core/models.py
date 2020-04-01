@@ -5,8 +5,14 @@ from django.contrib.auth.models import AbstractUser, UserManager
 # Create your models here.
 
 class UserManager(UserManager):
-    def update_user(self, user, cleaned_data):
-        user_fields = ['username', 'first_name', 'last_name', 'email']
+    @staticmethod
+    def update_user(user, cleaned_data):
+        user_fields = ['username', 'first_name', 'last_name', 'email', 'password']
+        user = User.objects.get(pk=user.id)
+
+        if User.objects.filter(username=cleaned_data.get('username', False)).exists():
+            return None
+
         fields_to_update = {'user': []}
 
         for key in user_fields:

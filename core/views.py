@@ -63,11 +63,11 @@ def login_view(request):
                                 password=request.POST['password'])
             if user is None:
                 return render(request, 'core/login.html',
-                              {'error': 'Неверный логин и/или пароль', 'form': form})
+                              {'error': 'Wrong login or/and password', 'form': form})
             login(request, user)
             return redirect('ask_margot')
         return render(request, 'core/login.html',
-                      {'error': 'Заполните формы корректно', 'form': form})
+                      {'error': 'Full out the forms correctly', 'form': form})
     else:
         if request.user.is_authenticated:
             return redirect('ask_margot')
@@ -88,7 +88,9 @@ def settings_view(request):
             return render(request, 'core/settings.html', {'form': form, 'error': 'Something wrong with data'})
 
         user = request.user
-        User.objects.update_user(user, form.cleaned_data)
+        user = User.objects.update_user(user, form.cleaned_data)
+        if user is None:
+            return render(request, 'core/settings.html', {'form': form, 'error': 'This user already exist'})
         return redirect('settings')
 
     form = EditForm()
