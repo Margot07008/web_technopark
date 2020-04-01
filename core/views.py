@@ -1,29 +1,15 @@
-from django.conf.global_settings import AUTHENTICATION_BACKENDS
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django import forms
 from django.contrib.auth import authenticate, login, logout
-
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from core.forms import LoginForm, RegistrationForm, EditForm
+
+
 User = get_user_model()
 
 
-
-# Create your views here.
-
 def registration_view(request):
-    class RegistrationForm(forms.Form):
-        username = forms.CharField()
-        first_name = forms.CharField()
-        last_name = forms.CharField()
-        email = forms.EmailField()
-
-        password = forms.CharField(widget=forms.PasswordInput)
-        repeat_password = forms.CharField(widget=forms.PasswordInput)
-        # avatar = forms.ImageField()
 
     if request.method == 'GET':
         return render(request, 'core/registration.html',
@@ -66,9 +52,6 @@ def registration_view(request):
 
 
 def login_view(request):
-    class LoginForm(forms.Form):
-        username = forms.CharField()
-        password = forms.CharField(widget=forms.PasswordInput())
 
     if request.method == 'GET':
         return render(request, 'core/login.html',
@@ -98,14 +81,6 @@ def logout_view(request):
 
 
 def settings_view(request):
-    class EditForm(forms.Form):
-        username = forms.CharField(required=False)
-        first_name = forms.CharField(required=False)
-        last_name = forms.CharField(required=False)
-        email = forms.EmailField(required=False)
-
-        password = forms.CharField(widget=forms.PasswordInput, required=False)
-        # avatar = forms.ImageField()
 
     if request.method == 'POST':
         form = EditForm(request.POST, request.FILES)

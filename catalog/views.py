@@ -1,28 +1,18 @@
-from django.contrib.auth.models import User
-from django import forms
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-import json
-
-from django.views import View
-from django.contrib.contenttypes.models import ContentType
-
-from .models import Question, Tag, Answer, LikeDislike
+from .models import Question, Answer
+from catalog.forms import QuestionForm, AnswerForm
 
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
-
-
 
 def post_list(request):
     if request.GET.get('answered') is not None:
         sort_key = '-total_answers'
     else:
         sort_key = '-create_date'
-
 
     object_list = Question.objects.all().order_by(sort_key)
     paginator = Paginator(object_list, 3)  # 3 поста на каждой странице
@@ -39,11 +29,6 @@ def post_list(request):
 	          'catalog/index.html', {'page': page, 'questions': posts})
 
 
-class QuestionForm(forms.Form):
-    header = forms.CharField(label="Title")
-    body_quest = forms.CharField(label="Text", widget=forms.Textarea(attrs={'rows':'3'}))
-    tags = forms.CharField(label="Tags", required=False)
-
 def add_new_question(request):
     if request.method == "POST":
 
@@ -59,8 +44,6 @@ def add_new_question(request):
     form = QuestionForm()
     return render(request, 'catalog/ask.html', {'form': form})
 
-class AnswerForm(forms.Form):
-    body_answer = forms.CharField(label='Your anwer', widget=forms.Textarea(attrs={'rows':'3'}))
 
 
 
@@ -116,34 +99,3 @@ def question_page(request, question_id):
 #     return render(request,
 #                   src, {'page': page, 'iteration_list': posts}, context)
 
-
-class VotesView(View):
-    model = None  # Модель данных - Статьи или Комментарии
-    vote_type = None  # Тип комментария Like/Dislike
-
-    def post(self, request, pk):
-        obj = self.model.objects.get(pk=pk)
-        # GenericForeignKey не поддерживает метод get_or_create
-        try:
-            likedislike = LikeDislike.objects.get(content_type=ContentType.objects.get_for_model(obj), object_id=obj.id,
-                                                  user=request.user)
-            if likedislike.vote is not self.vote_type:
-                likedislike.vote = self.vote_type
-                likedislike.save(update_fields=['vote'])
-                result = True
-            else:
-                likedislike.delete()
-                result = False
-        except LikeDislike.DoesNotExist:
-            obj.votes.create(user=request.user, vote=self.vote_type)
-            result = True
-
-        return HttpResponse(
-            json.dumps({
-                "result": result,
-                "like_count": obj.votes.likes().count(),
-                "dislike_count": obj.votes.dislikes().count(),
-                "sum_rating": obj.votes.sum_rating()
-            }),
-            content_type="application/json"
-        )
