@@ -73,13 +73,9 @@ class LikeDislike(models.Model):
 class QuestionManager(models.Manager):
     def create_question(self, **kwargs):
         author_id = kwargs['author']
-        print(author_id)
         header = kwargs['header']
-        print(header)
         body_quest = kwargs['body_quest']
-        print(body_quest)
         tags = kwargs['tags']
-        print(tags)
         question = self.create(author=author_id, header=header, body_quest=body_quest)
         question.save()
         for tag in tags:

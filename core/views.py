@@ -94,5 +94,8 @@ def settings_view(request):
         return redirect('settings')
 
     form = EditForm()
-    return render(request, 'core/settings.html', {'form': form})
+    if request.user.is_authenticated:
+        return render(request, 'core/settings.html', {'form': form})
+    return redirect('ask_margot')
+
 

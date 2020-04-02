@@ -29,7 +29,6 @@ def post_list(request):
 
 def add_new_question(request):
     if request.method == "POST":
-
         form = QuestionForm(request.POST)
         if form.is_valid():
             tags = form.cleaned_data['tags'].split()
@@ -42,8 +41,9 @@ def add_new_question(request):
             return render(request, 'catalog/ask.html', {'error': 'Something wrong with data'})
 
     form = QuestionForm()
-    return render(request, 'catalog/ask.html', {'form': form})
-
+    if request.user.is_authenticated:
+        return render(request, 'catalog/ask.html', {'form': form})
+    return redirect('ask_margot')
 
 
 
@@ -62,7 +62,6 @@ def question_page(request, question_id):
 
     answers = Answer.objects.filter(question=question_id).order_by('-create_date')
     form = AnswerForm()
-
 
     paginator = Paginator(answers, 3)  # 3 поста на каждой странице
     page = request.GET.get('page')
