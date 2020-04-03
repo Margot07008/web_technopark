@@ -5,7 +5,13 @@
 {% block page_name %}
     ask_margot_login
 {% endblock %}
-
+{% block header %}
+    <div class="col ask_me">
+        <a href={% url 'login' %}>
+            <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" type="submit">ASK ME</button>
+        </a>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="new_questoin">
         <div class="new_questoin_lable">
