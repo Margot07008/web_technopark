@@ -14,17 +14,10 @@ def post_list(request):
     else:
         sort_key = '-create_date'
 
-    object_list = Question.objects.all().order_by(sort_key)
-    paginator = Paginator(object_list, 3)
-    page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    return render(request,
-	          'catalog/index.html', {'page': page, 'questions': posts})
+    questions = Question.objects.all().order_by(sort_key)
+    posts = my_paginator(questions, request, 3)
+
+    return render(request, 'catalog/index.html', {'questions': posts})
 
 
 def add_new_question(request):
@@ -62,8 +55,13 @@ def question_page(request, question_id):
 
     answers = Answer.objects.filter(question=question_id).order_by('-create_date')
     form = AnswerForm()
+    posts = my_paginator(answers, request, 3)
+    context.update({'form': form, 'question': question, 'answers': posts})
 
-    paginator = Paginator(answers, 3)  # 3 поста на каждой странице
+    return render(request, 'catalog/question.html', context=context)
+
+def my_paginator(objects_list, request, per_page):
+    paginator = Paginator(objects_list, per_page)
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
@@ -74,27 +72,4 @@ def question_page(request, question_id):
         # Если страница больше максимальной, доставить последнюю страницу результатов
         posts = paginator.page(paginator.num_pages)
 
-    context.update({'form': form, 'question': question, 'answers': posts})
-    # return render(request,
-    #               'catalog/question.html', {'page': page, 'questions': question, 'answers': posts})
-
-    # my_paginator(request, answers,context, 3, 'catalog/question.html')
-
-    return render(request, 'catalog/question.html', context=context)
-
-
-# def my_paginator(request, object_list, context, count, src):
-#
-#     paginator = Paginator(object_list, count)  # count постов на каждой странице
-#     page = request.GET.get('page')
-#     try:
-#         posts = paginator.page(page)
-#     except PageNotAnInteger:
-#         # Если страница не является целым числом, поставим первую страницу
-#         posts = paginator.page(1)
-#     except EmptyPage:
-#         # Если страница больше максимальной, доставить последнюю страницу результатов
-#         posts = paginator.page(paginator.num_pages)
-#     return render(request,
-#                   src, {'page': page, 'iteration_list': posts}, context)
-
+    return posts
