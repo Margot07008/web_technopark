@@ -24,7 +24,7 @@
 
 {% block content %}
     <div class="new_questoin">
-        <div class="new_questoin_lable">
+        <div class="new_questoin_lable font-italic">
             <h3>New question</h3>
         </div>
         {% if error %}
@@ -38,7 +38,7 @@
                    {{ form|crispy }}
             </div>
             <div class="col ask_me_btn">
-                <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="ask" type="submit">ASK ME</button>
+                <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="ask" type="submit">ASK</button>
             </div>
         </form>
     </div>

@@ -25,7 +25,7 @@ div.select_questions {
         overflow: auto;
     margin-top: 5px;
     max-height: 186px;
-
+    min-height: 150px;
 }
 
 .ava_question{
@@ -103,8 +103,10 @@ button.dislike{
 .question_tags{
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 .tags_style{
     padding-left: 10px;
 }
+

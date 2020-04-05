@@ -16,7 +16,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg  navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand ml-3 " href="{% url 'ask_margot' %}">Ask_margot</a>
+    <a class="navbar-brand ml-3 font-italic" href="{% url 'ask_margot' %}">Ask_margot</a>
     <div class="my_bar collapse navbar-collapse" id="navbarSupportedContent">
         <div class="col ">
             <form>
@@ -28,10 +28,10 @@
         {% if request.user.is_anonymous %}
             <div>
                 <a href={%  url 'login'%}>
-                    <button type="button" class="btn btn-link">log in</button>
+                    <button type="button" class="btn btn-link font-italic">log in</button>
                 </a>
                 <a href={% url 'registration' %}>
-                    <button type="button" class="btn btn-link">Register</button>
+                    <button type="button" class="btn btn-link font-italic">Register</button>
                 </a>
             </div>
         {% else %}
@@ -39,13 +39,13 @@
                 <div class="avatar"
                      style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
                              background-size: contain"></div>
-                <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar">{{ request.user }}</a>
+                <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar font-italic">{{ request.user }}</a>
                 <div>
                     <a href={% url 'settings' %}>
-                        <button type="button" class="btn btn-link">settings</button>
+                        <button type="button" class="btn btn-link font-italic">settings</button>
                     </a>
                     <a href={% url 'logout' %}>
-                        <button type="button" class="btn btn-link">log out</button>
+                        <button type="button" class="btn btn-link font-italic">log out</button>
                     </a>
                 </div>
             </div>
@@ -72,17 +72,17 @@
                         {% endfor %}
                     </div>
 
-
                 </div>
                 <div class="best_members">
                     <div class="p-3">
                         <div class="best_members_topic">
-                            <h4 class="font-italic">New members</h4></div>
-                        <ol class="list-unstyled">
+                            <h4 class="font-italic">New members</h4>
+                        </div>
+                        <div class="tags">
                             {% for user in users %}
-                                <li><a href="#">{{ user }}</a></li>
+                                <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag">{{ user }}</button>
                             {% endfor %}
-                        </ol>
+                        </div>
                     </div>
                 </div>
             </div>
