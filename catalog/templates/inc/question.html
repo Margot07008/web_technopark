@@ -10,7 +10,7 @@
                         <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
                         <div>{{ question.author }}</div>
                         <div><h6>{{ question.create_date }}</h6></div>
-                        <div><h6>{{ question.rating }}</h6>
+                        <div><h6>{{ question.total_likes }}</h6>
                             <button class="like">
                                 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                             </button>
@@ -21,13 +21,13 @@
                     </div>
 
                     <div class="header_question">
-                        <a  href="/question/{{ question.id }}" ><div class="btn btn-lg btn-block btn-default rounded-0 btn-dark" >{{ question.header }}</div></a>
+                        <a  href="{% url 'question'  question.id %}" ><div class="btn btn-lg btn-block btn-default rounded-0 btn-dark" >{{ question.header }}</div></a>
                         <div class="body_question">{{ question.body_quest }}</div>
                         <div class="question_tags">
                     <label>Tags: </label>
                     {% for t in question.tags.all %}
 
-                        <a href="#" class="tags_style">  {{ t }}</a>
+                        <a href="{% url 'tag' t.id %}" class="tags_style">  {{ t }}</a>
 
                     {% endfor %}
                 </div>
@@ -35,15 +35,6 @@
                     </div>
 
                 </div>
-{#                <div class="question_tags">#}
-{#                    <label>Tags: </label>#}
-{#                    {% for t in question.tags.all %}#}
-{##}
-{#                        <a href="#" class="tags_style">  {{ t }}</a>#}
-{##}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            <div class="best_members_topic"><a  href="/question/{{ question.id }}" >{{ question.total_answers }} answers</a></div>#}
             </li>
         </ul>
     </div>

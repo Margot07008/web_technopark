@@ -16,7 +16,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg  navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand ml-3 font-italic" href="{% url 'ask_margot' %}">Ask_margot</a>
+    <a class="navbar-brand ml-4 font-italic" href="{% url 'ask_margot' %}">Ask_margot</a>
     <div class="my_bar collapse navbar-collapse" id="navbarSupportedContent">
         <div class="col ">
             <form>
@@ -31,7 +31,7 @@
                     <button type="button" class="btn btn-link font-italic">log in</button>
                 </a>
                 <a href={% url 'registration' %}>
-                    <button type="button" class="btn btn-link font-italic">Register</button>
+                    <button type="button" class="btn btn-link font-italic">registration</button>
                 </a>
             </div>
         {% else %}
@@ -68,7 +68,7 @@
                     </div>
                     <div class="tags">
                         {% for t in tags %}
-                            <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag">{{ t.tag_name }}</button>
+                            <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag"><a href="{% url 'tag' t.id %}">{{ t.tag_name }}</a></button>
                         {% endfor %}
                     </div>
 

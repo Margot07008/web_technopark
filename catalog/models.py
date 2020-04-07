@@ -62,6 +62,7 @@ class QuestionManager(models.Manager):
         return question
 
 
+
 class Question(models.Model):
     objects = QuestionManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -70,7 +71,7 @@ class Question(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag)
     total_answers = models.IntegerField(default=0)
-    votes = GenericRelation(LikeDislike, related_query_name='question')
+    total_likes = models.IntegerField(default=0)
 
 
     def publish(self):
@@ -97,7 +98,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body_answer = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
-    votes = GenericRelation(LikeDislike, related_query_name='answer')
+    total_likes = models.IntegerField(default=0)
     flag = models.BooleanField(blank=True, default=False)
 
     def publish(self):

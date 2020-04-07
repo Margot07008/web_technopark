@@ -1,6 +1,3 @@
-
-
-
 div.select_questions {
     display: flex;
     text-align: center;
@@ -38,7 +35,7 @@ div.select_questions {
 .pagination > li > a
 {
     background-color: white;
-    color: #5A4181;
+    color: black;
 }
 
 .pagination > li > a:focus,
@@ -63,12 +60,6 @@ div.select_questions {
     margin-right: 8px;
 }
 
-/*.color_question{*/
-/*    background-color: #343a40;*/
-/*    color: white;*/
-/*    padding-right: 5px;*/
-/*    padding-left: 5px;*/
-/*}*/
 
 button.like{
 	width: 30px;
@@ -110,3 +101,6 @@ button.dislike{
     padding-left: 10px;
 }
 
+.btn_sort_question{
+    flex: 50%;
+}

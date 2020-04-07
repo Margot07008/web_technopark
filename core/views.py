@@ -53,6 +53,8 @@ def registration_view(request):
 
 def login_view(request):
 
+    if request.user.is_authenticated:
+        return redirect('ask_margot')
     if request.method == 'GET':
         return render(request, 'core/login.html',
                       {'form': LoginForm})
@@ -69,10 +71,7 @@ def login_view(request):
         return render(request, 'core/login.html',
                       {'error': 'Full out the forms correctly', 'form': form})
     else:
-        if request.user.is_authenticated:
-            return redirect('ask_margot')
         return render(request, 'core/login.html')
-
 
 def logout_view(request):
     if request.user.is_authenticated:

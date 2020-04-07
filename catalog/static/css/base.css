@@ -1,3 +1,7 @@
+html a{
+    text-decoration: none !important;
+}
+
 
 .right_table {
     width: 100%;

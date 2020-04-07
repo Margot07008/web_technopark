@@ -1,0 +1,38 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block page_name %}
+    ask_margot
+{% endblock %}
+
+{% block page_style %}
+
+    <link rel="stylesheet" href="{% static 'css/tag.css' %}">
+{% endblock %}
+{% block header %}
+    {% if request.user.is_anonymous  %}
+        <div class="col ask_me">
+            <a href={% url 'registration' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% else %}
+        <div class="col ask_me">
+            <a href={% url 'ask' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="tag_question">
+           <div class="new_questoin_lable font-italic">
+                    <h3>Tag: {{ tag }}</h3>
+                </div>
+            <div class="tape">
+                {% for q in questions %}
+                    {% include "../inc/question.html" with question=q %}
+                {% endfor %}
+
+            {% if questions %}
+                {% include "../inc/pagination.html" with page=questions %}
+            {% endif %}
+            </div>
+    </div>
+{% endblock %}

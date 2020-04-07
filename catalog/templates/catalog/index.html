@@ -21,22 +21,25 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    <div class="select_questions collapse-toggle">
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic"><a href={% url 'ask_margot' %}>New questions</a></button>
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic"><a href="?answered">Popular questions</a></button>
-    </div>
-    <div class="tape">
-        {% for q in questions %}
+    {% if error %}
+        <div class="alert alert-info"><H4>{{ error }}</H4></div>
+    {% else %}
 
-        {% include "../inc/question.html" with question=q %}
-
-
-
-
-        {% endfor %}
-
-    {% if questions %}
-        {% include "../inc/pagination.html" with page=questions %}
+        <div class="select_questions collapse-toggle">
+        <div class="btn_sort_question">
+            <a class="links" href={% url 'ask_margot' %}><button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic">New questions</button></a>
+            </div>
+            <div class="btn_sort_question">
+            <a class="links" href="?answered"><button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic">Popular questions</button></a>
+            </div>
+        </div>
+        <div class="tape">
+            {% for q in questions %}
+                {% include "../inc/question.html" with question=q %}
+            {% endfor %}
+        {% if questions %}
+            {% include "../inc/pagination.html" with page=questions %}
+        {% endif %}
+        </div>
     {% endif %}
-    </div>
 {% endblock %}

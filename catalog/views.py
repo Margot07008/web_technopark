@@ -1,7 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Question, Answer
+from .models import Question, Answer, Tag
 from catalog.forms import QuestionForm, AnswerForm
 
 from django.contrib.auth import get_user_model
@@ -15,6 +16,8 @@ def post_list(request):
         sort_key = '-create_date'
 
     questions = Question.objects.all().order_by(sort_key)
+    if len(questions) == 0:
+        return render(request, 'catalog/index.html', {'error': "Be the first to ask a question!"})
     posts = my_paginator(questions, request, 3)
 
     return render(request, 'catalog/index.html', {'questions': posts})
@@ -39,9 +42,21 @@ def add_new_question(request):
     return redirect('ask_margot')
 
 
+def tag_page(request, tag_id):
+    try:
+        tag_name = Tag.objects.get(pk=tag_id)
+    except:
+        return HttpResponse(status=404)
+    questions = Question.objects.filter(tags=tag_name)
+    posts = my_paginator(questions,request, 3)
+    return render (request, 'catalog/tag.html', {'questions':posts, 'tag':tag_name})
+
 
 def question_page(request, question_id):
-    question = Question.objects.get(pk=question_id)
+    try:
+        question = Question.objects.get(pk=question_id)
+    except:
+        return HttpResponse(status=404)
     context = {}
 
     if request.method == "POST":
@@ -53,7 +68,7 @@ def question_page(request, question_id):
         else:
             context.update({'error' : 'Invalid answer`s data'})
 
-    answers = Answer.objects.filter(question=question_id).order_by('-create_date')
+    answers = Answer.objects.filter(question=question_id).order_by('-total_likes')
     form = AnswerForm()
     posts = my_paginator(answers, request, 3)
     context.update({'form': form, 'question': question, 'answers': posts})
