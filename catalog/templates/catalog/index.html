@@ -43,3 +43,9 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block javascript %}
+     {% if  user.is_authenticated %}
+            <script type="text/javascript" src="{% static "js/LikeDislike.js" %}"></script>
+     {% endif %}
+{% endblock javascript%}

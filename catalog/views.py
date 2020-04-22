@@ -1,8 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Question, Answer, Tag
+from .models import Question, Answer, Tag, LikeDislike
 from catalog.forms import QuestionForm, AnswerForm
 
 from django.contrib.auth import get_user_model
@@ -88,3 +89,17 @@ def my_paginator(objects_list, request, per_page):
         posts = paginator.page(paginator.num_pages)
 
     return posts
+
+@login_required()
+def vote_view(request):
+    post = request.POST
+    user = request.user
+
+    vote_object, action, object_id = post['object'], post['action'], post['object_id']
+    if vote_object == 'question':
+        vote_object = Question.objects.get(pk=object_id)
+    else:
+        vote_object = Answer.objects.get(pk=object_id)
+    LikeDislike.objects.create_like(user, instance=vote_object, object_id=object_id, action=action)
+
+    return HttpResponse(vote_object.total_likes, status=200)

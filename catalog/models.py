@@ -29,24 +29,57 @@ class Tag(models.Model):
 
 
 class LikeDislikeManager(models.Manager):
-    pass
+    def is_liked(self, user, object_id):
+        print(user)
+        print(object_id)
+        try:
+            like = self.filter(user=user).get(object_id=object_id)
+            if like.is_active:
+                return True
+        except:
+            pass
+        return False
+
+    def create_like(self, user, instance, object_id, action='up-vote'):
+        try:
+            like = self.filter(user=user).get(object_id=object_id)
+            if like.is_active and action == 'down-vote':
+                print("dislike")
+                like.is_active = False
+                instance.total_likes -= 1
+                if instance.total_likes == -1:
+                    instance.total_likes = 0
+            elif not like.is_active and action == 'up-vote':
+                print("like")
+                print(instance.total_likes)
+                like.is_active = True
+                instance.total_likes += 1
+            like.save(update_fields=['is_active'])
+        except:
+            like = self.create(user=user, obj=instance, object_id=instance.id)
+            if action == 'up-vote':
+                like.is_active = True
+                print("create-like")
+                print(instance.total_likes)
+                instance.total_likes += 1
+            else:
+                print("create-dislike")
+            like.save()
+
+        instance.save(update_fields=['total_likes'])
+        return like
 
 class LikeDislike(models.Model):
     objects = LikeDislikeManager()
-    LIKE = 1
-    DISLIKE = -1
-
-    VOTES = (
-        (DISLIKE, 'Не нравится'),
-        (LIKE, 'Нравится')
-    )
-    vote = models.SmallIntegerField(choices=VOTES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #ContentType фреймворк
+    is_active = models.BooleanField(default=False)
+
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     obj = GenericForeignKey('content_type', 'object_id')
 
+    def __str__(self):
+        return self.user
 
 class QuestionManager(models.Manager):
     def create_question(self, **kwargs):
@@ -72,6 +105,7 @@ class Question(models.Model):
     tags = models.ManyToManyField(Tag)
     total_answers = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
+
 
 
     def publish(self):

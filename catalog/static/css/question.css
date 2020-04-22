@@ -12,7 +12,6 @@
 
 .body_question{
     max-height: 100%;
-    margin-right: 0;
 }
 
 .main_question{
@@ -21,7 +20,12 @@
 }
 
 .check_box{
-        text-align: right;
+    text-align: right;
     padding-top: 10px;
+    float: right;
 }
 
+.header_question {
+    width: 100%;
+    display: grid;
+}

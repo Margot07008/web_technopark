@@ -10,12 +10,36 @@
                         <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
                         <div>{{ question.author }}</div>
                         <div><h6>{{ question.create_date }}</h6></div>
-                        <div><h6>{{ question.total_likes }}</h6>
-                            <button class="like">
-                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <div>
+                        {%  csrf_token %}
+                            <button type="submit"
+
+                                            data-object="question"
+                                            data-action="up-vote"
+                                            data-user="{{ user.id }}"
+                                            data-id="{{ question.id }}"
+                                            {% if question.is_liked %}
+                                            class="btn btn-success vote disabled"
+                                            {% else %}
+                                            class="btn btn-light vote"
+                                            {% endif %}>
+                                        <i class="fa fa-chevron-up"></i>
                             </button>
-                            <button class="dislike">
-                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-light" id="vote{{ question.id }}"
+                                    disabled>
+                                {% if question.total_likes == -1 %}
+                                    0
+                                {% else %}
+                                    {{ question.total_likes }}
+                                {% endif %}
+                            </button>
+                            <button type="submit"
+                                    data-object="question"
+                                    data-action="down-vote"
+                                    data-user="{{ user.id }}"
+                                    data-id="{{ question.id }}"
+                                    class="btn btn-light vote">
+                                <i class="fa fa-chevron-down"></i>
                             </button>
                         </div>
                     </div>
@@ -38,6 +62,10 @@
             </li>
         </ul>
     </div>
+
+
+
+
 
 
 
