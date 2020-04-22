@@ -28,14 +28,11 @@ def add_new_question(request):
     if request.method == "POST":
         form = QuestionForm(request.POST)
         if form.is_valid():
-            tags = form.cleaned_data['tags'].split()
-            question = Question.objects.create_question(author=request.user, header=form.cleaned_data['header'], body_quest=form.cleaned_data['body_quest'], tags=tags)
+            question = Question.objects.create_question(author=request.user, header=form.header, body_quest=form.body_quest, tags=form.tags)
             if question is not None:
                 question.save()
                 return redirect('../question/{}'.format(question.id))
             return render(request, 'catalog/ask.html', {'error': 'Something went wrong. Try again.'})
-        else:
-            return render(request, 'catalog/ask.html', {'error': 'Something wrong with data'})
 
     form = QuestionForm()
     if request.user.is_authenticated:
