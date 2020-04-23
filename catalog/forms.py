@@ -11,26 +11,22 @@ class QuestionForm(forms.Form):
 
     def clean_header(self):
         header = self.cleaned_data['header']
-        try:
-            Question.objects.get(header=header)
-            raise ValidationError('This question already exist')
-        except Exception as e:
-            print(e)
-            return header
+        if Question.objects.filter(header=header).exists():
+            print("kek")
+            raise forms.ValidationError('This question already exist')
+        return header
+
 
     def clean_body_quest(self):
         body_quest = self.cleaned_data['body_quest']
-        if not body_quest:
-            raise ValidationError('Write the body of the question')
         return body_quest
 
     def clean_tags(self):
-        tags = self.cleaned_data['tags'].split()
+        tags = self.cleaned_data['tags']
+        if tags:
+            tags = tags.split()
         return tags
 
-
-
-        
 
 class AnswerForm(forms.Form):
     body_answer = forms.CharField(label='Your anwer', widget=forms.Textarea(attrs={'rows':'3'}))

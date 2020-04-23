@@ -30,15 +30,7 @@ class Tag(models.Model):
 
 class LikeDislikeManager(models.Manager):
     def is_liked(self, user, object_id):
-        print(user)
-        print(object_id)
-        try:
-            like = self.filter(user=user).get(object_id=object_id)
-            if like.is_active:
-                return True
-        except:
-            pass
-        return False
+        return self.filter(object_id=object_id, user=user,is_active=True).exists()
 
     def create_like(self, user, instance, object_id, action='up-vote'):
         try:
@@ -82,13 +74,8 @@ class LikeDislike(models.Model):
         return self.user
 
 class QuestionManager(models.Manager):
-    def create_question(self, **kwargs):
-        author_id = kwargs['author']
-        header = kwargs['header']
-        body_quest = kwargs['body_quest']
-        tags = kwargs['tags']
-        question = self.create(author=author_id, header=header, body_quest=body_quest)
-        question.save()
+    def create_question(self, author, header, body_quest, tags):
+        question = self.create(author=author, header=header, body_quest=body_quest)
         for tag in tags:
             current_tag = Tag.objects.add_tags(tag)
             question.tags.add(current_tag)
@@ -121,7 +108,7 @@ class AnswerManager(models.Manager):
         answer = self.create(author=author, question=question, body_answer=body_answer)
         question = Question.objects.get(pk=question.id)
         question.total_answers += 1
-        question.save(update_fields=['total_answers'])
+        question.save()
 
         return answer
 
