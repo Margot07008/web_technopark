@@ -93,8 +93,6 @@ class Question(models.Model):
     total_answers = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
 
-
-
     def publish(self):
         self.create_date = timezone.now()
         self.save()

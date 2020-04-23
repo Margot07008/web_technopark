@@ -18,11 +18,7 @@
                                             data-action="up-vote"
                                             data-user="{{ user.id }}"
                                             data-id="{{ question.id }}"
-                                            {% if question.is_liked %}
-                                            class="btn btn-success vote disabled"
-                                            {% else %}
-                                            class="btn btn-light vote"
-                                            {% endif %}>
+                                            class="btn btn-light vote">
                                         <i class="fa fa-chevron-up"></i>
                             </button>
                             <button type="button" class="btn btn-light" id="vote{{ question.id }}"
