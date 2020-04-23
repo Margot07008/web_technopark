@@ -30,3 +30,7 @@ class QuestionForm(forms.Form):
 
 class AnswerForm(forms.Form):
     body_answer = forms.CharField(label='Your anwer', widget=forms.Textarea(attrs={'rows':'3'}))
+
+    def clean_body_answer(self):
+        body_answer = self.cleaned_data['body_answer']
+        return body_answer

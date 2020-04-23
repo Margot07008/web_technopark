@@ -113,6 +113,8 @@ class AnswerManager(models.Manager):
         return answer
 
 
+
+
 class Answer(models.Model):
     objects = AnswerManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
