@@ -67,14 +67,10 @@ class EditForm(forms.Form):
 
     def clean_first_name(self):
         first_name = self.cleaned_data['first_name']
-        if not first_name.isalpha():
-            raise forms.ValidationError('First name must be only letters')
         return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data['last_name']
-        if not last_name.isalpha():
-            raise forms.ValidationError('Last name must be only letters')
         return last_name
 
     def clean_email(self):
