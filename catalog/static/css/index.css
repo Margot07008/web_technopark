@@ -1,6 +1,3 @@
-
-
-
 div.select_questions {
     display: flex;
     text-align: center;
@@ -23,8 +20,9 @@ div.select_questions {
     margin-left: 20px;
     margin-right: 20px;
         overflow: auto;
-    max-height: 150px;
-
+    margin-top: 5px;
+    max-height: 186px;
+    min-height: 150px;
 }
 
 .ava_question{
@@ -37,7 +35,7 @@ div.select_questions {
 .pagination > li > a
 {
     background-color: white;
-    color: #5A4181;
+    color: black;
 }
 
 .pagination > li > a:focus,
@@ -62,12 +60,6 @@ div.select_questions {
     margin-right: 8px;
 }
 
-/*.color_question{*/
-/*    background-color: #343a40;*/
-/*    color: white;*/
-/*    padding-right: 5px;*/
-/*    padding-left: 5px;*/
-/*}*/
 
 button.like{
 	width: 30px;
@@ -93,4 +85,22 @@ button.dislike{
 	border-color: rgba(255,82,82 ,1);
 	border-width: 1px;
 	font-size: 15px;
+}
+
+.header_question_text{
+    text-align: center;
+}
+
+.question_tags{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.tags_style{
+    padding-left: 10px;
+}
+
+.btn_sort_question{
+    flex: 50%;
 }

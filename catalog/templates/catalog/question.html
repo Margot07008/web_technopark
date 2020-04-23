@@ -1,4 +1,5 @@
 {% extends 'catalog/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block page_name %}
@@ -6,82 +7,69 @@
 {% endblock %}
 
 {% block page_style %}
-
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{##}
+{#    <link rel="stylesheet" href="{% static 'css/index.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/question.css' %}">
 {% endblock %}
 
 {% block header %}
     {% if request.user.is_anonymous  %}
         <div class="col ask_me">
-            <a href="../register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'registration' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% else %}
         <div class="col ask_me">
-            <a href="../ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'ask' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% endif %}
 {% endblock %}
 
+
+
 {% block content %}
-    <div class="tape">
-        <ul class="list-group">
-            <li class="list-group-item text-left mb-2 main_question">
-                <div class="one_question">
-                    <div class="color_question">
-                        <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
-                        <div>{{ questions.author }}</div>
-                        <div>{{ questions.create_date }}</div>
-                        <div>{{ questions.rating }}
-                            <button class="like">
-                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                            </button>
-                            <button class="dislike">
-                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="header_question">
-                        <div class="btn btn-lg btn-block btn-default rounded-0" >{{ questions.header }}</div>
-                        <div class="body_question">{{ questions.body_quest }}</div>
-                    </div>
-
-                </div>
-                <div class="question_tags">
-                    <label>Tags: </label>
-                    {% for t in tags %}
-                        {#                                {% if t in q.tag %}#}
-                        <a href="#" class="tags_style">  {{ t }}</a>
-                        {#                                {% endif %}#}
-                    {% endfor %}
-                </div>
-            </li>
-
-        </ul>
-    </div>
+    {% include '../inc/question.html' %}
     <div class="tape_answer">
-
-        {#    {% for answ in answers %}#}
+            {% for answ in answers %}
         <ul class="list-group list-group-itemp-info">
             <li class="list-group-item text-left mb-2">
                 <div class="one_answer ">
                     <div class="color_question">
                         <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
-                        <div>{{ answers.author }}</div>
-                        <div>{{ answers.create_date }}</div>
-                        <div>{{ answers.rating }}
-                            <button class="like">
-                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        <div>{{ answ.author }}</div>
+                        <div>{{ answ.create_date }}</div>
+                        <div>
+                            <button type="submit"
+                                            data-object="answer"
+                                            data-action="up-vote"
+                                            data-user="{{ user.id }}"
+                                            data-id="{{ answ.id }}"
+                                            {% if answ.is_liked %}
+                                            class="btn btn-success vote disabled"
+                                            {% else %}
+                                            class="btn btn-light vote"
+                                            {% endif %}>
+                                        <i class="fa fa-chevron-up"></i>
                             </button>
-                            <button class="dislike">
-                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-light" id="vote{{ answ.id }}" disabled>
+                                {% if answ.total_likes == -1 %}
+                                    0
+                                {% else %}
+                                    {{ answ.total_likes }}
+                                {% endif %}
+                            </button>
+                            <button type="submit"
+                                    data-object="answer"
+                                    data-action="down-vote"
+                                    data-user="{{ user.id }}"
+                                    data-id="{{ answ.id }}"
+                                    class="btn btn-light vote">
+                                <i class="fa fa-chevron-down"></i>
                             </button>
                         </div>
                     </div>
 
                     <div class="header_question">
-                        <div class="body_question">{{ answers.body_answer }}</div>
+                        <div class="body_question">{{ answ.body_answer }}</div>
                     </div>
                 </div>
                 <div class="form-check check_box">
@@ -91,19 +79,27 @@
             </li>
 
         </ul>
-        {#        {% endfor %}#}
-
+                {% endfor %}
     </div>
-    <form method="POST" action="../../views.py">
-            {%  csrf_token%}
+
+    {% if user.is_authenticated  %}
+    <form method="POST" action={% url 'question' question.id %}>
+            {%  csrf_token %}
             <div class="form-group row mb-2">
                 <div class="col-lg-12">
-                    <textarea placeholder="Enter your answer here..." rows="6" style="resize: none; width: 100%" name="text" id="../../views.py" ></textarea>
+                   {{ form|crispy }}
                 </div>
             </div>
             <div class="col ask_me_btn">
-        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="add_answer" type="submit">answer</button>
+        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="question" type="submit">answer</button>
     </div>
         </form>
+    {% endif %}
+    {% include "../inc/pagination.html" with page=answers %}
+{% endblock content %}
 
-{% endblock %}
+{% block javascript %}
+     {% if  user.is_authenticated %}
+            <script type="text/javascript" src="{% static "js/LikeDislike.js" %}"></script>
+     {% endif %}
+{% endblock javascript%}

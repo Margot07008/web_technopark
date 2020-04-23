@@ -12,77 +12,40 @@
 {% block header %}
     {% if request.user.is_anonymous  %}
         <div class="col ask_me">
-            <a href="register/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'registration' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% else %}
         <div class="col ask_me">
-            <a href="ask/"><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+            <a href={% url 'ask' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
         </div>
     {% endif %}
 {% endblock %}
 {% block content %}
-    <div class="select_questions row collapse-toggle">
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0">New questions</button>
-        <button class="col btn btn-lg btn-dark btn-primary rounded-0">Best questions</button>
-    </div>
-    <div class="tape">
-        {% for q in questions %}
-            <ul class="list-group">
-                <li class="list-group-item text-left mb-2">
-                    <div class="one_question">
-                        <div class="color_question">
-                            <img class="ava_question" src="{% static 'images/1.jpg'%}"  alt="ooops">
-                            <div>{{ q.author }}</div>
-                            <div>{{ q.create_date }}</div>
-                            <div>{{ q.rating }}
-                                <button class="like">
-                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                                </button>
-                                <button class="dislike">
-                                    <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </div>
+    {% if error %}
+        <div class="alert alert-info"><H4>{{ error }}</H4></div>
+    {% else %}
 
-                        <div class="header_question">
-                            <form action="question" method="get">
-                            <button  type="submit" name="question_page" value="{{ q.id }}" class="btn btn-lg btn-block btn-default rounded-0" >{{ q.header }}</button>
-                                </form>
-                            <div class="body_question">{{ q.body_quest }}</div>
-                        </div>
-                        <div class="color_question">
-                            {% for t in tags %}
-                                {#                                {% if t in q.tag %}#}
-                                <div><a href="#">  {{ t }}</a></div>
-                                {#                                {% endif %}#}
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
-                <div class="best_members_topic"><a href="#" >answers</a></div>
-                </li>
-            </ul>
-        {% endfor %}
-    </div>
-    <nav aria-label="Page navigation example ">
-        <ul class="pagination justify-content-center ">
-            <li class="page-item ">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        <div class="select_questions collapse-toggle">
+        <div class="btn_sort_question">
+            <a class="links" href={% url 'ask_margot' %}><button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic">New questions</button></a>
+            </div>
+            <div class="btn_sort_question">
+            <a class="links" href="?answered"><button class="col btn btn-lg btn-dark btn-primary rounded-0 font-italic">Popular questions</button></a>
+            </div>
+        </div>
+        <div class="tape">
+            {% for q in questions %}
+                {% include "../inc/question.html" with question=q %}
+            {% endfor %}
+        {% if questions %}
+            {% include "../inc/pagination.html" with page=questions %}
+        {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
 
+{% block javascript %}
+     {% if  user.is_authenticated %}
+            <script type="text/javascript" src="{% static "js/LikeDislike.js" %}"></script>
+     {% endif %}
+{% endblock javascript%}

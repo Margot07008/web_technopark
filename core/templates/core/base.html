@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block page_name %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/ask.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/71bed39430.js"></script>
+    {% block page_style %}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand ml-4 font-italic " href={% url 'ask_margot' %}>Ask_margot</a>
+    <div class="my_bar collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="col ">
+            <form>
+                <input class="form-control mr-0" type="search" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+        {% block header %}
+        {% endblock %}
+        {% if request.user.is_anonymous %}
+            <div>
+                <a href={%  url 'login'%}>
+                    <button type="button" class="btn btn-link font-italic">log in</button>
+                </a>
+                <a href={% url 'registration' %}>
+                    <button type="button" class="btn btn-link font-italic">registration</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="log_user">
+                <div class="avatar"
+                     style="background: url('{% static 'images/2.jpg' %}') no-repeat center;
+                             background-size: contain"></div>
+                <a href="#" class="navbar-brand ml-0 mr-0 user_name_navbar font-italic">{{ request.user }}</a>
+                <div>
+                    <a href={% url 'settings' %}>
+                        <button type="button" class="btn btn-link font-italic">settings</button>
+                    </a>
+                    <a href={% url 'logout' %}>
+                        <button type="button" class="btn btn-link font-italic">log out</button>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</nav>
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 blog-main mt-2">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <aside class="col-md-4 blog-sidebar slide_bar">
+            <div class="right_table">
+                <div class="popular_tags">
+                    <div>
+                        <h3 class="font-italic">Popular tags</h3>
+                    </div>
+                    <div class="tags">
+                        {% for t in tags %}
+                            <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag">{{ t.tag_name }}</button>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div class="best_members">
+                    <div class="p-3">
+                        <div class="best_members_topic">
+                            <h4 class="font-italic">Best members</h4></div>
+                       <div class="tags">
+                            {% for user in users %}
+                                <button type="button" class="btn btn-outline-dark my-2 my-sm-2 btn-light tag">{{ user }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block page_name %}
+    ask_margot_edit_profile
+{% endblock %}
+
+{% block page_style %}
+<link rel="stylesheet" href="{% static 'css/ask.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block header %}
+        <div class="col ask_me">
+            <a href={% url 'ask' %}><button class="btn btn-outline-dark my-2 my-sm-2 btn-light"  type="submit">ASK ME</button></a>
+        </div>
+{% endblock %}
+
+{% block content %}
+    <div class="new_questoin">
+        <div class="new_questoin_lable font-italic">
+            <h3>Settings: {{ request.user }}</h3>
+        </div>
+        <form method="POST" action={% url 'settings' %}>
+            {%  csrf_token%}
+             {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            {{ form|crispy }}
+
+            <div class="col ask_me_btn">
+        <button class="btn btn-outline-dark my-2 my-sm-2 btn-light" id="edit" type="submit">SAVE</button>
+    </div>
+        </form>
+    </div>
+
+{% endblock %}

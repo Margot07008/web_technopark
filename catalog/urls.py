@@ -2,8 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.ask_margot, name='ask_margot'),
-    path('ask/', views.ask_question, name='ask'),
-    path('views.py', views.add_new_question, name='add_new_question'),
-    path('question/', views.question_page, name='question'),
+    path('', views.post_list, name='ask_margot'),
+    path('ask/', views.add_new_question, name='ask'),
+    path('question/<int:question_id>', views.question_page, name='question'),
+    path('tag/<int:tag_id>', views.tag_page, name='tag'),
+    path('ajax_urls/vote/', views.vote_view, name='vote'),
 ]
+
