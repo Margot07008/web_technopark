@@ -41,7 +41,7 @@ $('.vote').on('click',function (e) {
             type: 'POST',
             data: datastring,
             success: function (response) {
-                $('#vote'+object_id+object).html(response);
+                $('#vote'+object_id).html(response);
             },
             error: function () {
                 alert(0)
