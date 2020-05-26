@@ -12,7 +12,7 @@ User = get_user_model()
 
 def post_list(request):
     if request.GET.get('answered') is not None:
-        sort_key = '-total_answers'
+        sort_key = '-total_likes'
     else:
         sort_key = '-create_date'
 
